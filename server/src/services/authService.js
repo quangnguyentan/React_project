@@ -1,6 +1,6 @@
 import User from "../models/user";
 import Otp from "../models/otp";
-
+import axios from "axios";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
@@ -9,20 +9,25 @@ const { v4: uuidv4 } = require("uuid");
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 const hashOTP = (otp) => bcrypt.hashSync(otp, bcrypt.genSaltSync(10));
-export const registerService = ({ phone, password, fullname }) =>
+export const registerService = ({ phone }) =>
   new Promise(async (resolve, reject) => {
     try {
       const user = await User.findOne({ phone });
       if (user) {
         throw new Error("Phone number has been already ");
       }
+      // cách 1
+      // const num = Math.floor(Math.random() * (999999 - 100000) + 100000);
+      // const otp = num.toString();
+      // cách 2 là sử dụng thư viện
       const OTP = otpGenerator.generate(6, {
         digits: true,
-        alphabests: false,
         upperCaseAlphabets: false,
+        lowerCaseAlphabets: false,
         specialChars: false,
       });
       console.log(OTP);
+
       const response = await Otp.create({
         phone,
         otp: hashOTP(OTP),
@@ -37,6 +42,7 @@ export const registerService = ({ phone, password, fullname }) =>
       resolve({
         err: user ? "Phone number has been already" : 2,
         msg: response ? "OTP send successfully" : "",
+        response,
         // token: token || null,
       });
     } catch (error) {
@@ -46,24 +52,26 @@ export const registerService = ({ phone, password, fullname }) =>
 export const verifyOtpServices = ({ phone, otp }) =>
   new Promise(async (resolve, reject) => {
     try {
-      const otpHolder = await Otp.find({ phone: phone });
-      if (otpHolder.length === 0) throw new Error("You use an Expired OTP");
-      console.log(otpHolder.length);
-      console.log(otpHolder);
+      const otpHolder = await Otp.find({ phone });
+      if (otpHolder.length === 0) throw new Error("Expired OTP! ");
       const rightOtpFind = otpHolder[otpHolder.length - 1];
       const validUser = bcrypt.compareSync(otp, rightOtpFind.otp);
       if (rightOtpFind.phone === phone && validUser) {
         const user = await User.create({
           phone: rightOtpFind.phone,
+          id: uuidv4(),
         });
         const token =
           user &&
           jwt.sign({ id: user.id, phone: user.phone }, process.env.SECRET_KEY, {
             expiresIn: "2d",
           });
-        // const OTPDelete = await User.deleteMany({
-        //   phone: rightOtpFind.phone,
-        // });
+        if (user) {
+          await Otp.deleteMany({
+            phone,
+          });
+        }
+
         return resolve({
           err: token ? 0 : 2,
           msg: "Register is successful",

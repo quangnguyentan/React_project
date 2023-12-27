@@ -1,15 +1,23 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
-import Navigation from "../../components/molecules/navbar-menu";
-import { Header } from "../../components/organisms";
+import React, { useCallback, useEffect } from "react";
+import { Link, Outlet, Route, useLocation } from "react-router-dom";
+
+import { Footer, Header } from "../../components/organisms";
+import HeaderMenu from "../../components/organisms/HeaderMenu";
+import path from "../../utils/path";
+import Home from "../home";
 const Public = () => {
+  const location = useLocation();
   return (
     <div className="w-full flex flex-col items-center">
       <div className="flex w-full bg-opacity-90 bg-white">
         <Header />
+        <HeaderMenu />
       </div>
-      <div className="w-full flex items-center flex-col ">
+      <div className="w-full flex items-center flex-col h-full">
         <Outlet />
+        <div className="">
+          {location.pathname.slice(1) === path.HOME ? "" : <Footer />}
+        </div>
       </div>
     </div>
   );

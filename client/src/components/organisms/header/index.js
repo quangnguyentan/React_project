@@ -3,8 +3,7 @@ import logo from "../../../assets/images/logo.png";
 import icons from "../../../utils/icons";
 import { Link } from "react-router-dom";
 import path from "../../../utils/path";
-import { Button, Input } from "../../atoms/";
-import { Navigation, SubMenu } from "../../molecules";
+import { Button, Input } from "../../atoms";
 const { IoIosSearch } = icons;
 const Header = () => {
   return (
@@ -43,9 +42,6 @@ const Header = () => {
             </button> */}
           </div>
         </div>
-      </div>
-      <div>
-        <Navigation />
       </div>
     </div>
   );

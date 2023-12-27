@@ -27,12 +27,12 @@ export const navigation = [
       {
         id: 3,
         value: "Thông tin tài khoản",
-        path: path.CUSTOMER,
+        path: `customer/${path.CUSTOMER}`,
       },
       {
         id: 4,
         value: "Đơn hàng của tôi",
-        path: path.NOFICATION,
+        path: `sales/${path.ORDERHISTORY}`,
       },
       {
         id: 5,
@@ -52,25 +52,30 @@ export const customerTabs = [
     id: 1,
     value: "Thông tin tài khoản",
     icon: <FaUser size={16} />,
+    path: path.CUSTOMER,
   },
   {
     id: 2,
     value: "Thông báo của tôi",
     icon: <IoMdNotifications size={16} />,
+    path: path.NOFICATION,
   },
   {
     id: 3,
     value: "Quản lí đơn hàng",
     icon: <MdWorkHistory size={16} />,
+    path: path.MYACCOUNT[1] ? path.ORDERHISTORY : "",
   },
   {
     id: 4,
     value: "Sổ địa chỉ",
     icon: <IoLocationSharp size={16} />,
+    path: path.ADDRESS,
   },
   {
     id: 5,
     value: "Thông tin thanh toán",
     icon: <MdOutlinePayment size={16} />,
+    path: path.PAYMENTCART,
   },
 ];

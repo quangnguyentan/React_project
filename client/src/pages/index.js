@@ -1,6 +1,11 @@
-export { default as Home } from "./home/";
-export { default as Login } from "./auth/";
-export { default as Public } from "./public/";
-export { default as Astra } from "./astra/";
-export { default as Account } from "./account/";
-export { default as LoginSuccess } from "./auth/Login-success";
+export { default as Home } from "./home";
+export { default as Login } from "./login";
+export { default as Public } from "./public";
+export { default as Account } from "./myapp/account/";
+export { default as LoginSuccess } from "./login-success";
+export { default as Address } from "./myapp/address/";
+export { default as Notification } from "./myapp/notification/";
+export { default as PaymentCard } from "./myapp/paymentcard/";
+export { default as Order } from "./myapp/order/";
+export { default as MyAccount } from "./myapp/myaccount/";
+export { default as NotFound } from "./404";
