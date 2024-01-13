@@ -44,7 +44,7 @@ export const navigation = [
     id: 6,
     image: cart,
     css: "hover:rounded-md flex gap-1 justify-center items-center w-[40px] h-[40px] before:h-[20px] before:bg-gray-300 before:mr-[20px] before:ml-[-20px] before:align-center ml-[30px] mr-[10px] before:pr-[1px]",
-    path: `/${path.CHECKOUT}`,
+    path: `/${path.CHECKOUT}${path.CART}`,
   },
 ];
 export const customerTabs = [

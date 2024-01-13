@@ -4,7 +4,6 @@ import { Link, Outlet, Route, useLocation } from "react-router-dom";
 import { Footer, Header } from "../../components/organisms";
 import HeaderMenu from "../../components/organisms/HeaderMenu";
 import path from "../../utils/path";
-import Home from "../home";
 const Public = () => {
   const location = useLocation();
   return (
