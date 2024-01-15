@@ -94,11 +94,15 @@ const Login = () => {
       console.log(response);
       if (response.err === 2) {
         setLoading(true);
-        const recaptcha = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {}
-        );
+        const recaptcha = new RecaptchaVerifier(auth, "recaptcha-container", {
+          size: "invisible",
+          callback: (response) => {
+            console.log({ callback: response });
+          },
+          "expired-callback": (response) => {
+            console.log({ expired: response });
+          },
+        });
         await signInWithPhoneNumber(auth, phone, recaptcha)
           .then((confirmationResult) => {
             window.confirmationResult = confirmationResult;
@@ -204,18 +208,20 @@ const Login = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="">
-                    <PhoneInput
-                      country={"vn"}
-                      value={phone}
-                      onChange={(phone) => setPhone("+" + phone)}
-                      enableAreaCodes={true}
-                    />
+                  <div className="flex items-center flex-col gap-2">
+                    <div>
+                      <PhoneInput
+                        country={"vn"}
+                        value={phone}
+                        onChange={(phone) => setPhone("+" + phone)}
+                        enableAreaCodes={true}
+                      />
+                    </div>
                     {/* <Input nameKey="Số điện thoại" /> */}
                     {/* <Button name="Tiếp tục" handleOnclick={() => onSignup()} /> */}
                     <button
                       onClick={onSignup}
-                      className="flex w-full bg-red-500 border rounded-md h-[40px] items-center justify-center"
+                      className="flex w-[305px] bg-red-500 border rounded-md h-[40px] items-center justify-center"
                     >
                       {loading && (
                         <CgSpinner

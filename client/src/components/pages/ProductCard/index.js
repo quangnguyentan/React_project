@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
 import { Link } from "react-router-dom";
 import path from "../../../utils/path";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const [quantity, setQuantity] = useState(1);
+  const handleQuantity = (type) => {
+    if (type === "increase") {
+      setQuantity(quantity + 1);
+    } else {
+      if (quantity === 1) {
+        return;
+      } else {
+        setQuantity(quantity - 1);
+      }
+    }
+  };
   return (
     <div className="w-main flex flex-col  ">
       <div className="w-full flex">
@@ -127,17 +139,27 @@ const ProductCard = () => {
             <div className="flex flex-col  gap-2">
               <span className="font-medium">Số lượng</span>
               <div className="flex items-center gap-2">
-                <div className="w-[33px] h-[33px] rounded-lg border  ">
-                  <button className="p-2">
-                    <FiMinus />
+                <div className="w-[33px] h-[33px] rounded-lg border ">
+                  <button
+                    onClick={() => handleQuantity("reduce")}
+                    className="p-2"
+                  >
+                    <FiMinus
+                      className={
+                        quantity === 1 ? "text-gray-200" : "text-gray-500"
+                      }
+                    />
                   </button>
                 </div>
                 <div className="w-38px] h-[32px] rounded-lg border ">
-                  <span className="p-4">1</span>
+                  <span className="p-4">{quantity}</span>
                 </div>
                 <div className="w-[34px] h-[34px] rounded-lg border ">
-                  <button className="p-2">
-                    <GoPlus />
+                  <button
+                    className="p-2"
+                    onClick={() => handleQuantity("increase")}
+                  >
+                    <GoPlus className="text-gray-700" />
                   </button>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../../atoms";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import path from "../../../utils/path";
 import icons from "../../../utils/icons";
 const { CiStar, RiDeleteBin6Line, CiDeliveryTruck, GoPlus, FiMinus } = icons;
@@ -11,7 +11,7 @@ const Cart = () => {
         <div className="ml-4 w-[70%] flex flex-col">
           <div className="flex flex-col w-full">
             <h3 className="text-xl font-medium p-4 pb-0 ">GIỎ HÀNG</h3>
-            <div className="m-4 flex  ">
+            <div className="m-4 flex ">
               <div className="bg-white w-full p-4 rounded-xl">
                 <div className="flex justify-between items-center ">
                   <div className="flex gap-2 w-[324px] ">
@@ -29,7 +29,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <div className="m-4 flex ">
+            <div className="mx-4  flex ">
               <div className="bg-white w-full p-4 rounded-xl">
                 <div className="flex justify-between items-center ">
                   <div className=" w-[324px] gap-2 flex ">
@@ -201,9 +201,11 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <Button name="Mua ngay (1)" fw />
-          </div>
+          <Link to={`/${path.CHECKOUT}${path.PAYMENT}`}>
+            <div className="flex flex-col gap-2">
+              <Button name="Mua ngay (1)" fw />
+            </div>
+          </Link>
         </div>
       </div>
     </div>

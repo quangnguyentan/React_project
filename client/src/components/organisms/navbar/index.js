@@ -30,9 +30,9 @@ const Navbar = () => {
   //   if(activeTab === 1) setcurrentData()
   // }, [activeTab])
   return (
-    <div className="flex-3 flex flex-col px-4  ">
+    <div className="flex-3 flex flex-col m-4 px-4 w-full ">
       {currentData ? (
-        <div className="flex gap-2">
+        <div className="flex gap-2 ">
           <img
             src={
               currentData && currentData.avatar ? currentData.avatar : avatar
@@ -61,8 +61,8 @@ const Navbar = () => {
             onClick={() => setActivedTab(el.id)}
             className={`flex px-2 py-2 items-center gap-4 ${
               activedTab === +el.id
-                ? "bg-gray-200 border-b-0 "
-                : "  text-gray-800"
+                ? "bg-gray-300 border-b-0 "
+                : " text-gray-800"
             }`}
           >
             {el.icon}

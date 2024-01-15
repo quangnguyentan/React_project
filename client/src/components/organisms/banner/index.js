@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import path from "../../../utils/path";
 const Banner = () => {
   return (
-    <div className="w-full flex items-center justify-center ">
+    <div className="bg-white rounded-md w-full flex items-center justify-center ">
       <div className="pl-4">
         <img src={banner} alt="" className="w-[306px] h-[306px] rounded-xl" />
       </div>

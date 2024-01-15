@@ -6,3 +6,8 @@ export { default as cart } from "../../../assets/images/cart.png";
 export { default as facebook } from "../../../assets/images/facebook.png";
 export { default as google } from "../../../assets/images/google.png";
 export { default as home } from "../../../assets/images/home.png";
+export { default as zalo_pay } from "../../../assets/images/zalo_pay.png";
+export { default as momo } from "../../../assets/images/momo.jpg";
+export { default as payment_hand } from "../../../assets/images/payment_hand.png";
+export { default as vn_pay } from "../../../assets/images/vn_pay.png";
+export { default as viettel_money } from "../../../assets/images/viettel_money.png";

@@ -79,3 +79,42 @@ export const customerTabs = [
     path: path.PAYMENTCART,
   },
 ];
+const style = `after:w-[50px] after:bottom-[-3px] relative after:absolute after:border after:border-b-4 after:block after:right-[50%] after:border-blue-500 font-normal after:rounded-xl after:translate-x-[50%]`;
+const activeHover = `after:w-[50px] after:bottom-[-3px] relative after:absolute hover:after:border hover:after:border-b-4 after:block after:right-[50%] after:border-blue-500  after:rounded-xl after:translate-x-[50%]`;
+export const prodcutDetailTabs = [
+  {
+    id: 1,
+    value: "Phổ Biến",
+    style: style,
+    hover: activeHover,
+    path: `/${path.DETAILS_PRODUCT}`,
+  },
+  {
+    id: 2,
+    value: "Bán Chạy",
+    style: style,
+    hover: activeHover,
+    path: `/${path.DETAILS_PRODUCT}${path.TOP_SELLER}`,
+  },
+  {
+    id: 3,
+    value: "Hàng Mới",
+    style: style,
+    hover: activeHover,
+    path: `/${path.DETAILS_PRODUCT}${path.TOP_SELLER}`,
+  },
+  {
+    id: 4,
+    value: "Giá Thấp Đến Cao",
+    style: style,
+    hover: activeHover,
+    path: `/${path.DETAILS_PRODUCT}${path.TOP_SELLER}`,
+  },
+  {
+    id: 5,
+    value: "Giá Cao Đến Thấp",
+    style: style,
+    hover: activeHover,
+    path: `/${path.DETAILS_PRODUCT}${path.TOP_SELLER}`,
+  },
+];
