@@ -3,8 +3,16 @@ import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
 import { Link } from "react-router-dom";
 import path from "../../../utils/path";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../../stores/actions/cartAction";
+import { productList } from "../../../utils/datatest";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const dispatch = useDispatch();
+  const handleAddToCart = (productId) => {
+    dispatch(addToCart(...productList));
+    console.log(productList);
+  };
   return (
     <div className="w-main flex flex-col  ">
       <div className="w-full flex">
@@ -152,6 +160,7 @@ const ProductCard = () => {
             <div className="flex flex-col gap-2">
               <Button name="Mua ngay" fw />
               <Button
+                handleOnclick={handleAddToCart}
                 style={`w-full px-4 py-2 rounded-md border  border-blue-500 text-blue-500 bg-white`}
                 name="Thêm vào giỏ"
               />

@@ -31,9 +31,10 @@ const HeaderMenu = () => {
   const handleMouseLeave = () => {
     setShowDropdown(false);
   };
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   return (
-    <div className="flex items-start flex-4 py-2 justify-end ">
+    <div className="flex items-start flex-4 py-2 justify-end relative">
       {navigation.map((el) => {
         if (el.children) {
           return (
@@ -114,6 +115,9 @@ const HeaderMenu = () => {
                 alt={el.name}
               />
               <span className="text-sm font-medium">{el.value}</span>
+              <div className="absolute top-[5px] right-[10px] bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center text-xs">
+                {cartItems.length || 0}
+              </div>
             </NavLink>
           );
         }
