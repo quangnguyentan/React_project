@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import icons from "../../../../utils/icons";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  removeAllCart,
   removeToCart,
   updateQuantityAction,
 } from "../../../../stores/actions/cartAction";

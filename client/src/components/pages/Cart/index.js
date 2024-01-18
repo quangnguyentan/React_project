@@ -6,10 +6,15 @@ import icons from "../../../utils/icons";
 import ItemProductCart from "./ItemProductCart";
 import { productList } from "../../../utils/datatest";
 import PriceProductCart from "./PriceProductCart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeAllCart } from "../../../stores/actions/cartAction";
 const { CiStar, RiDeleteBin6Line } = icons;
 const Cart = () => {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const handleRemoveCartAll = () => {
+    dispatch(removeAllCart());
+  };
   return (
     <div className="w-main flex flex-col  ">
       <div className="w-full flex">
@@ -30,7 +35,7 @@ const Cart = () => {
                     <span>Số lượng</span>
                     <span>Thành tiền</span>
                     <span>
-                      <RiDeleteBin6Line />
+                      <RiDeleteBin6Line onClick={handleRemoveCartAll} />
                     </span>
                   </div>
                 </div>
