@@ -16,3 +16,14 @@ export const updateQuantityAction = (productId, quantity) => {
     },
   };
 };
+export const removeToCart = (productId) => {
+  return {
+    type: actionType.REMOVE_CART,
+    payload: productId,
+  };
+};
+export const removeAllCart = () => {
+  return {
+    type: actionType.REMOVE_ALL_CART,
+  };
+};

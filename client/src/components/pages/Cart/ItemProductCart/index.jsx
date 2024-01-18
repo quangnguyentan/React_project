@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import icons from "../../../../utils/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { updateQuantityAction } from "../../../../stores/actions/cartAction";
+import {
+  removeToCart,
+  updateQuantityAction,
+} from "../../../../stores/actions/cartAction";
 const { RiDeleteBin6Line, GoPlus, FiMinus } = icons;
 function ItemProductCart(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -25,6 +28,9 @@ function ItemProductCart(props) {
       const newQuantity = product.quantity - 1;
       updateQuantity(productId, newQuantity);
     }
+  };
+  const handleRemoveCart = (productId) => {
+    dispatch(removeToCart(productId));
   };
   return (
     <>
@@ -88,7 +94,9 @@ function ItemProductCart(props) {
                 <sub>₫</sub>
               </div>
               <span>
-                <RiDeleteBin6Line />
+                <RiDeleteBin6Line
+                  onClick={() => handleRemoveCart(product.id)}
+                />
               </span>
             </div>
           </div>

@@ -2,6 +2,8 @@ import React from "react";
 import { Button } from "../../../atoms";
 import { CiStar } from "react-icons/ci";
 import { useSelector } from "react-redux";
+import path from "../../../../utils/path";
+import { Link } from "react-router-dom";
 
 export default function PriceProductCart() {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -62,9 +64,11 @@ export default function PriceProductCart() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <Button name="Mua ngay (1)" fw />
-          </div>
+          <Link to={`/${path.CHECKOUT}${path.PAYMENT}`}>
+            <div className="flex flex-col gap-2">
+              <Button name="Mua ngay (1)" fw />
+            </div>
+          </Link>
         </div>
       ))}
     </>

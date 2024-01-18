@@ -12,12 +12,27 @@ const cartReducer = (state = init, action) => {
       return { ...state, cartItems: [...state.cartItems, action.payload] };
     case actionType.UPDATE_QUANTITY:
       const { productId, quantity } = action.payload;
+      console.log(productId);
       const updateCart = state.cartItems.map((item) =>
         item.id === productId ? { ...item, quantity } : item
       );
       return {
         ...state,
         cartItems: updateCart,
+      };
+    case actionType.REMOVE_CART:
+      console.log(action.payload);
+      const updatedCart = state.cartItems.filter(
+        (product) => product.id !== action.payload
+      );
+      return {
+        ...state,
+        cartItems: updatedCart,
+      };
+    case actionType.REMOVE_ALL_CART:
+      return {
+        ...state,
+        cartItems: [],
       };
     default:
       return state;
