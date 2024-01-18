@@ -1,6 +1,14 @@
 import React, { memo } from "react";
 
-const Button = ({ name, handleOnclick, style, iconsBefore, iconAfter, fw }) => {
+const Button = ({
+  name,
+  handleOnclick,
+  style,
+  iconsBefore,
+  iconAfter,
+  fw,
+  quantity,
+}) => {
   return (
     <button
       type="button"
@@ -11,7 +19,7 @@ const Button = ({ name, handleOnclick, style, iconsBefore, iconAfter, fw }) => {
               fw ? "w-full" : "w-[410px] px-4 ml-4"
             } px-4 py-2 rounded-md text-white bg-red-500 hover:bg-gray-700`
       }
-      onClick={() => handleOnclick(1)}
+      onClick={() => handleOnclick(quantity)}
     >
       {iconsBefore}
       <span>{name}</span>

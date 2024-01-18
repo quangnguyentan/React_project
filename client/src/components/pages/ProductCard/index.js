@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
 import { Link } from "react-router-dom";
@@ -8,10 +8,19 @@ import { addToCart } from "../../../stores/actions/cartAction";
 import { productList } from "../../../utils/datatest";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
-  const handleAddToCart = (productId) => {
-    dispatch(addToCart(...productList));
+  const handleAddToCart = (quantity) => {
+    dispatch(addToCart(...productList, quantity));
     console.log(productList);
+  };
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
   return (
     <div className="w-main flex flex-col  ">
@@ -135,15 +144,23 @@ const ProductCard = () => {
             <div className="flex flex-col  gap-2">
               <span className="font-medium">Số lượng</span>
               <div className="flex items-center gap-2">
-                <div className="w-[33px] h-[33px] rounded-lg border  ">
-                  <button className="p-2">
+                <div
+                  className="w-[33px] h-[33px] rounded-lg border hover:bg-slate-300"
+                  onClick={handleDecrease}
+                >
+                  <button className="p-2 ">
                     <FiMinus />
                   </button>
                 </div>
-                <div className="w-38px] h-[32px] rounded-lg border ">
-                  <span className="p-4">1</span>
+                <div className="w-[38px] h-[32px] rounded-lg border ">
+                  <span className=" flex items-center justify-center">
+                    {quantity}
+                  </span>
                 </div>
-                <div className="w-[34px] h-[34px] rounded-lg border ">
+                <div
+                  className="w-[34px] h-[34px] rounded-lg border hover:bg-slate-300"
+                  onClick={handleIncrease}
+                >
                   <button className="p-2">
                     <GoPlus />
                   </button>
@@ -160,6 +177,7 @@ const ProductCard = () => {
             <div className="flex flex-col gap-2">
               <Button name="Mua ngay" fw />
               <Button
+                quantity={quantity}
                 handleOnclick={handleAddToCart}
                 style={`w-full px-4 py-2 rounded-md border  border-blue-500 text-blue-500 bg-white`}
                 name="Thêm vào giỏ"

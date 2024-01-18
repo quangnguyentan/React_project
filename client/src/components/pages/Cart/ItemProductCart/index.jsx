@@ -1,10 +1,31 @@
 import React, { useState } from "react";
 import icons from "../../../../utils/icons";
-import { useSelector } from "react-redux";
-import { productList } from "../../../../utils/datatest";
+import { useDispatch, useSelector } from "react-redux";
+import { updateQuantityAction } from "../../../../stores/actions/cartAction";
 const { RiDeleteBin6Line, GoPlus, FiMinus } = icons;
 function ItemProductCart(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+  const updateQuantity = (productId, newQuantity) => {
+    // Dispatch the updateQuantityAction to update the quantity in the Redux store
+    dispatch(updateQuantityAction(productId, newQuantity));
+  };
+
+  const handleIncrement = (productId) => {
+    console.log(cartItems);
+    const product = cartItems.find((item) => item.id === productId);
+    if (product) {
+      const newQuantity = product.quantity + 1;
+      updateQuantity(productId, newQuantity);
+    }
+  };
+  const handleDecrement = (productId) => {
+    const product = cartItems.find((item) => item.id === productId);
+    if (product && product.quantity > 1) {
+      const newQuantity = product.quantity - 1;
+      updateQuantity(productId, newQuantity);
+    }
+  };
   return (
     <>
       {cartItems.map((product) => (
@@ -40,22 +61,30 @@ function ItemProductCart(props) {
               <div>
                 <div className="flex">
                   <div className="w-[23px] h-[24px] rounded-l-sm border pl-[2px] ">
-                    <button className="">
+                    <button
+                      className=""
+                      onClick={() => handleDecrement(product.id)}
+                    >
                       <FiMinus />
                     </button>
                   </div>
                   <div className="w-[40px] h-[24px] border">
-                    <span className="flex justify-center">1</span>
+                    <span className="flex justify-center">
+                      {product.quantity}
+                    </span>
                   </div>
                   <div className="w-[23px] h-[24px] rounded-r-sm border pl-[2px] ">
-                    <button className="">
+                    <button
+                      className=""
+                      onClick={() => handleIncrement(product.id)}
+                    >
                       <GoPlus />
                     </button>
                   </div>
                 </div>
               </div>
               <div className="flex font-bold text-red-500">
-                441.000
+                {product.price * product.quantity}
                 <sub>₫</sub>
               </div>
               <span>
