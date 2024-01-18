@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../../atoms";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import path from "../../../utils/path";
 import icons from "../../../utils/icons";
 import ItemProductCart from "./ItemProductCart";
@@ -111,6 +111,7 @@ const Cart = () => {
             </div>
           </div>
         </div>
+
         {cartItems.length > 0 && <PriceProductCart></PriceProductCart>}
       </div>
     </div>

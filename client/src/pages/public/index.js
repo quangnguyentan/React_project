@@ -8,14 +8,24 @@ const Public = () => {
   const location = useLocation();
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="flex w-full bg-opacity-90 bg-white">
-        <Header />
-        <HeaderMenu />
-      </div>
+      {location.pathname === `/${path.CHECKOUT}${path.PAYMENT}` ? (
+        ""
+      ) : (
+        <div className="flex w-full bg-opacity-90 bg-white">
+          <Header />
+          <HeaderMenu />
+        </div>
+      )}
+
       <div className="w-full flex items-center flex-col h-full">
         <Outlet />
         <div className="">
-          {location.pathname.slice(1) === path.HOME ? "" : <Footer />}
+          {location.pathname.slice(1) === path.HOME ||
+          `/${path.CHECKOUT}${path.PAYMENT}` ? (
+            ""
+          ) : (
+            <Footer />
+          )}
         </div>
       </div>
     </div>

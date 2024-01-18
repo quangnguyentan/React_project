@@ -3,11 +3,11 @@ import icons from "../../../utils/icons";
 import { Link } from "react-router-dom";
 import path from "../../../utils/path";
 const { CiStar } = icons;
-const Product = () => {
+const Products = () => {
   return (
     <>
-      <div className="w-full">
-        <h3 className="py-4 font-medium text-lg">Giá tốt hôm nay</h3>
+      <div className="w-full bg-white rounded-xl p-4">
+        <h3 className="py-4 font-medium  text-lg">Giá tốt hôm nay</h3>
         <Link to={`/${path.PRODUCT_INFO}`}>
           <div className="w-[150px] border rounded-lg h-[265px] bg-gray-100 flex flex-col gap-2 cursor-pointer  ">
             <img
@@ -33,7 +33,7 @@ const Product = () => {
           </div>
         </Link>
       </div>
-      <div className="w-full mb-8">
+      <div className="w-full mb-4 rounded-xl bg-white p-4">
         <h3 className="py-4 font-medium text-lg">Sản phẩm bán chạy</h3>
         <div className="flex gap-2">
           <Link to={`/${path.PRODUCT_INFO}`}>
@@ -110,4 +110,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Products;

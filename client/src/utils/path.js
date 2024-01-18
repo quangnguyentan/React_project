@@ -7,12 +7,14 @@ const path = {
   CUSTOMER: "account/edit",
   CHECKOUT: "checkout/",
   CART: "cart",
-  DETAILS_PRODUCT: "do-choi-me-be",
+  PAYMENT: "payment",
+  DETAILS_PRODUCT: "do-choi-me-be/",
   PRODUCT_INFO: "ba-lo-nam-thoi-trang-cao-cap-phong-cach-moi",
   NOFICATION: "notification",
   LOGIN_SUCCESS: "login-success/:userId/:tokenLogin",
   ORDERHISTORY: "order/history",
   ADDRESS: "address",
   PAYMENTCART: "paymentcard",
+  TOP_SELLER: "top-seller",
 };
 export default path;

@@ -9,6 +9,7 @@ import { productList } from "../../../utils/datatest";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
   const [quantity, setQuantity] = useState(1);
+
   const dispatch = useDispatch();
   const handleAddToCart = (quantity) => {
     dispatch(addToCart(...productList, quantity));

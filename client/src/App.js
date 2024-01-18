@@ -11,22 +11,27 @@ import {
   PaymentCard,
   MyAccount,
   NotFound,
+  Cart,
+  DetailsProduct,
+  ProductCard,
+  TopSeller,
+  Payment,
 } from "./pages/index";
 import path from "./utils/path";
 import React from "react";
-import DetailProduct from "./components/pages/Details_Product";
-import ProductCard from "./components/pages/ProductCard";
-import Cart from "./components/pages/Cart";
 
 function App() {
   return (
-    <div className="overflow-hidden bg-gray-200">
+    <div className="overflow-hidden bg-gray-100">
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
-          {/* <Route path="*" element={<Address />} /> */}
           <Route path={path.HOME} element={<Home />} />
+          <Route path={path.DETAILS_PRODUCT} element={<DetailsProduct />}>
+            <Route path={path.TOP_SELLER} element={<TopSeller />} />
+          </Route>
           <Route path={path.CHECKOUT}>
             <Route path={path.CART} element={<Cart />} />
+            <Route path={path.PAYMENT} element={<Payment />} />
           </Route>
           <Route path={path.MYACCOUNT[0]} element={<MyAccount />}>
             <Route path={path.CUSTOMER} element={<Account />} />
@@ -41,7 +46,7 @@ function App() {
               <Route path={path.ORDERHISTORY} element={<Order />} />
             </Route>
           )}
-          <Route path={path.DETAILS_PRODUCT} element={<DetailProduct />} />
+          {/* <Route path={path.DETAILS_PRODUCT} element={<Details_Product />} /> */}
           <Route path={path.PRODUCT_INFO} element={<ProductCard />} />
         </Route>
 
