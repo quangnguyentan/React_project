@@ -4,12 +4,21 @@ import { CiStar } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import path from "../../../../utils/path";
 import { Link } from "react-router-dom";
+import { formatMoney, totalPrice } from "../../../../utils/helper";
 
 export default function PriceProductCart() {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const calculateTotal = () => {
+    let total = 0;
+    cartItems.forEach((product) => {
+      total += totalPrice(product.price, product.quantities);
+    });
+    return total;
+  };
+
   return (
     <>
-      {cartItems.map((product) => (
+      {
         <div className="w-[28%] flex flex-col m-4 ml-0 gap-2">
           <div className=" bg-white  rounded-xl p-4 flex-col flex gap-4">
             <div className="flex items-center">
@@ -55,7 +64,7 @@ export default function PriceProductCart() {
               <span>Tổng tiền</span>
               <div className="flex flex-col ">
                 <div className="flex justify-end text-red-500  text-2xl">
-                  {product.quantity * product.price}
+                  {formatMoney(calculateTotal())}
                   <sub className="">đ</sub>
                 </div>
                 <span className="font-light text-xs">
@@ -70,7 +79,7 @@ export default function PriceProductCart() {
             </div>
           </Link>
         </div>
-      ))}
+      }
     </>
   );
 }

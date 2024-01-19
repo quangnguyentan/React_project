@@ -7,12 +7,12 @@ export const addToCart = (product, quantity) => {
     payload: productWithQuantity,
   };
 };
-export const updateQuantityAction = (productId, quantity) => {
+export const updateQuantityAction = (productId, quantities) => {
   return {
     type: actionType.UPDATE_QUANTITY,
     payload: {
       productId,
-      quantity,
+      quantities,
     },
   };
 };

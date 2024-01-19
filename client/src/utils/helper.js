@@ -16,3 +16,7 @@ export const formatMoney = (number) => {
   formattedString = formattedString?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   return formattedString;
 };
+export const totalPrice = (price, quantity) => {
+  let total = price * quantity;
+  return total;
+};

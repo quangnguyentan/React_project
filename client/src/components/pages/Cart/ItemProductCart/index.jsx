@@ -6,6 +6,7 @@ import {
   removeToCart,
   updateQuantityAction,
 } from "../../../../stores/actions/cartAction";
+import { formatMoney, totalPrice } from "../../../../utils/helper";
 const { RiDeleteBin6Line, GoPlus, FiMinus } = icons;
 function ItemProductCart(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -19,20 +20,21 @@ function ItemProductCart(props) {
     console.log(cartItems);
     const product = cartItems.find((item) => item.id === productId);
     if (product) {
-      const newQuantity = product.quantity + 1;
+      const newQuantity = product.quantities + 1;
       updateQuantity(productId, newQuantity);
     }
   };
   const handleDecrement = (productId) => {
     const product = cartItems.find((item) => item.id === productId);
-    if (product && product.quantity > 1) {
-      const newQuantity = product.quantity - 1;
+    if (product && product.quantities > 1) {
+      const newQuantity = product.quantities - 1;
       updateQuantity(productId, newQuantity);
     }
   };
   const handleRemoveCart = (productId) => {
     dispatch(removeToCart(productId));
   };
+
   return (
     <>
       {cartItems.map((product) => (
@@ -46,7 +48,7 @@ function ItemProductCart(props) {
                 </div>
                 <div className="flex flex-col gap-1 w-[202px]">
                   <span className="overflow-ellipsis overflow-hidden text-sm font-normal">
-                    {product.nameProduct}
+                    {product.title}
                   </span>
                   <span className="text-xs text-gray-400">{product.color}</span>
                   <div className="flex gap-2 text-xs  font-normal">
@@ -62,7 +64,7 @@ function ItemProductCart(props) {
                 </div>
               </div>
               <div className="flex text-black font-bold">
-                441.000
+                {formatMoney(product?.price)}
                 <sub>₫</sub>
               </div>
               <div>
@@ -77,7 +79,7 @@ function ItemProductCart(props) {
                   </div>
                   <div className="w-[40px] h-[24px] border">
                     <span className="flex justify-center">
-                      {product.quantity}
+                      {product.quantities}
                     </span>
                   </div>
                   <div className="w-[23px] h-[24px] rounded-r-sm border pl-[2px] ">
@@ -90,11 +92,11 @@ function ItemProductCart(props) {
                   </div>
                 </div>
               </div>
-              <div className="flex font-bold text-red-500">
-                {product.price * product.quantity}
+              <div className="flex font-bold text-red-500 ">
+                {formatMoney(totalPrice(product.price, product.quantities))}
                 <sub>₫</sub>
               </div>
-              <span>
+              <span className="cursor-pointer">
                 <RiDeleteBin6Line
                   onClick={() => handleRemoveCart(product.id)}
                 />

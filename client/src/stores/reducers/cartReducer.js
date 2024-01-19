@@ -11,10 +11,10 @@ const cartReducer = (state = init, action) => {
     case actionType.ADD_TO_CART:
       return { ...state, cartItems: [...state.cartItems, action.payload] };
     case actionType.UPDATE_QUANTITY:
-      const { productId, quantity } = action.payload;
+      const { productId, quantities } = action.payload;
       console.log(productId);
       const updateCart = state.cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
+        item.id === productId ? { ...item, quantities } : item
       );
       return {
         ...state,
