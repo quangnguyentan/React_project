@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import path from "../../../utils/path";
+import { apiGetProductById } from "../../../services/productService";
+import { formatMoney } from "../../../utils/helper";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const [product, setProduct] = useState(null);
+  const { category, id, title } = useParams();
+  const getProductById = async (id) => {
+    const response = await apiGetProductById(id);
+    if (response?.success) setProduct(response?.productDatas);
+  };
+  useEffect(() => {
+    getProductById(id);
+  }, []);
+  console.log(product);
   const [quantity, setQuantity] = useState(1);
   const handleQuantity = (type) => {
     if (type === "increase") {
@@ -25,18 +37,20 @@ const ProductCard = () => {
             <div className="w-[50%] m-4 bg-white rounded-xl ">
               <div className="w-[368px] border m-6 rounded-xl h-[360px]">
                 <img
-                  src="https://salt.tikicdn.com/cache/750x750/ts/product/ff/1d/25/3cbab329640c3c26edbdd97eebb54659.jpg.webp"
-                  alt=""
+                  src={product?.thumb?.[0]?.split(",")[0].split(" ")[0]}
+                  alt="thumb"
                 />
               </div>
-              <div className="m-6 w-full">
-                <div className="w-[53px] h-[53px] border rounded-lg">
-                  <img
-                    className="w-[38px] h-[38px] text-center mx-2 my-2 "
-                    src="https://salt.tikicdn.com/cache/100x100/ts/product/03/fb/8b/f6e8236ff07dce90bcff2e3e0310a68f.jpg.webp"
-                    alt=""
-                  />
-                </div>
+              <div className="m-6 w-full flex gap-2">
+                {product?.images?.map((el) => (
+                  <div className="w-[53px] h-[53px] border rounded-lg">
+                    <img
+                      className="w-[38px] h-[38px] text-center mx-2 my-2 "
+                      src={el?.split(",")[0].split(" ")[0]}
+                      alt=""
+                    />
+                  </div>
+                ))}
               </div>
             </div>
             <div className="w-[43%] rounded-xl flex-col my-4  bg-white">
@@ -46,15 +60,18 @@ const ProductCard = () => {
                   src="https://salt.tikicdn.com/ts/upload/d7/56/04/b93b8c666e13f49971483596ef14800f.png"
                   alt=""
                 />
+
                 <p className="font-normal text-sm">
-                  Thương hiệu: <span className="text-blue-700">Gubag</span>
+                  Thương hiệu:
+                  <Link to={product?.brandLink} className="">
+                    <span className="text-blue-700 cursor-pointer">
+                      {product?.brand}
+                    </span>
+                  </Link>
                 </p>
               </div>
               <div className="px-4 flex flex-col gap-2">
-                <h3 className="font-medium text-xl">
-                  Balo 2 ngăn laptop sức chứa lớn, 2 ngăn lớn đựng được nhiều
-                  đồ, nhỏ gọn, tiện lợi cho việc đi làm, chống sốc, chống nước
-                </h3>
+                <h3 className="font-medium text-xl">{product?.title}</h3>
                 <div className="flex items-center gap-2 text-sm ">
                   <div className="flex items-center gap-1 ">
                     <span className="font-medium">4.8</span>
@@ -62,10 +79,10 @@ const ProductCard = () => {
                   </div>
                   <span className="text-gray-400">(30)</span>
                   <div className="w-[1px] h-[12px] bg-gray-300 mx-[-1px] mt-[2px]"></div>
-                  <span className="text-gray-400">Đã bán 110</span>
+                  <span className="text-gray-400">Đã bán {product?.sold}</span>
                 </div>
                 <div className="font-semibold text-2xl">
-                  499.000
+                  {formatMoney(product?.prices)}
                   <sup>đ</sup>
                 </div>
               </div>

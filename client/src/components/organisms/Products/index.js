@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import icons from "../../../utils/icons";
 import { Link } from "react-router-dom";
 import path from "../../../utils/path";
+import { useDispatch, useSelector } from "react-redux";
+import { apiGetProductAction } from "../../../stores/actions/prodAction";
+import { apiGetProduct } from "../../../services/productService";
 const { CiStar } = icons;
 const Products = () => {
+  const fetchApiProduct = async () => {
+    const response = await apiGetProduct({ limit: 10, sort: "-prices" });
+    console.log(response);
+  };
+  // const { data } = useSelector((state) => state.product);
+  // const dispatch = useDispatch();
+  useEffect(() => {
+    fetchApiProduct();
+    // dispatch(apiGetProductAction({ limit: 10 }));
+  }, []);
+  // console.log(data);
   return (
     <>
       <div className="w-full bg-white rounded-xl p-4">
