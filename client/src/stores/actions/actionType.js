@@ -13,5 +13,8 @@ const actionType = {
   //In - De Product
   INCREASE: "INCREASE",
   DECREASE: "DECREASE",
+
+  GET_PRODUCT_BY_ID: "GET_PRODUCT_BY_ID",
+  GET_PRODUCT: "GET_PRODUCT",
 };
 export default actionType;

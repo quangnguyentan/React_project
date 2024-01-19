@@ -1,24 +1,31 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import path from "../../../utils/path";
+import { categories, navigation } from "../../../utils/constant";
+import { createSlug } from "../../../utils/helper";
 
 const Slidebar = () => {
   return (
-    <div className="flex-col flex w-full  ">
+    <div className="overflow-y-auto max-h-[529px] scrollbar-hide ">
       <p className="font-semibold px-2 py-2 text-sm">Danh mục</p>
-      <div className="py-2 mx-2  hover:rounded-lg hover:bg-gray-400">
-        <Link
-          to={`/${path.DETAILS_PRODUCT}`}
-          className="flex gap-2 items-center "
+      {categories.map((el) => (
+        <div
+          key={el.id}
+          className="py-2 px-4 mx-2 break-words whitespace-normal hover:rounded-lg hover:bg-gray-200 text-sm"
         >
-          <img
-            className="w-[32px] h-[32px]"
-            src="https://salt.tikicdn.com/cache/100x100/ts/category/13/64/43/226301adcc7660ffcf44a61bb6df99b7.png.webp"
-            alt=""
-          />
-          <p>Đồ chơi - Mẹ & Bé</p>
-        </Link>
-      </div>
+          <NavLink
+            to={createSlug(el.categoryName)}
+            className="flex gap-2 items-center "
+          >
+            <img
+              className="w-[32px] h-[32px]"
+              src={el.categoryImage}
+              alt="categoryImage"
+            />
+            <p>{el.categoryName}</p>
+          </NavLink>
+        </div>
+      ))}
     </div>
   );
 };

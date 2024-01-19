@@ -57,7 +57,7 @@ const Payment = () => {
                   <div className="flex flex-col gap-1 text-sm text-gray-500">
                     <span className="overflow-hidden overflow-ellipsis line-clamp-1 ">
                       Ba lô nam thời trang cao cấp phong cách mới 15,6" - Màu
-                      đen abcadsd
+                      đen abcadsd xasxas
                     </span>
                     <div className="flex justify-between">
                       <span>SL: x1</span>

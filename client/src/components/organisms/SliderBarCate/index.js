@@ -21,22 +21,20 @@ const SliderCate = () => {
     from: "0",
     to: "0",
   });
-  console.log();
-  console.log(prices.from);
 
   const handleValueChange = (e) => {
     console.log(e);
   };
   return (
     <div className="p-4 flex flex-col gap-4">
-      <div className="flex flex-col gap-1">
+      {/* <div className="flex flex-col gap-1">
         <h3 className="text-sm font-medium">Danh Mục Sản Phẩm</h3>
         {data.map((el, index) => (
           <div key={index}>
             <span className="font-normal text-xs">{el}</span>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="flex flex-col ">
         <h3 className=" flex items-center gap-2 font-normal text-sm text-gray-400">
           <span>
@@ -85,18 +83,18 @@ const SliderCate = () => {
           <div className="flex gap-1">
             <input
               value={prices.from}
-              onChange={(e) =>
-                setPrices((prev) => ({ ...prev, from: e.target.value }))
-              }
+              // onChange={(e) =>
+              //   setPrices((prev) => ({ ...prev, from: e.target.value }))
+              // }
               type="number"
               className="border-black border rounded-md w-[77px] h-[30px] placeholder:text-black  px-2 outline-none "
             />
             <span>-</span>
             <input
               value={prices.to}
-              onChange={(e) =>
-                setPrices((prev) => ({ ...prev, to: e.target.value }))
-              }
+              // onChange={(e) =>
+              //   setPrices((prev) => ({ ...prev, to: e.target.value }))
+              // }
               type="number"
               className="border-black border rounded-md w-[77px] h-[30px] px-2 placeholder:text-black outline-none "
             />

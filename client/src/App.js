@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, matchPath } from "react-router-dom";
 import {
   Home,
   Login,
@@ -22,7 +22,7 @@ import React from "react";
 
 function App() {
   return (
-    <div className="overflow-hidden bg-gray-100">
+    <div className=" bg-gray-100 ">
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />

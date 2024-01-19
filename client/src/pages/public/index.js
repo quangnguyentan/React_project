@@ -21,7 +21,7 @@ const Public = () => {
         <Outlet />
         <div className="">
           {location.pathname.slice(1) === path.HOME ||
-          `/${path.CHECKOUT}${path.PAYMENT}` ? (
+          location.pathname === `/${path.CHECKOUT}${path.PAYMENT}` ? (
             ""
           ) : (
             <Footer />

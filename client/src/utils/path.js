@@ -8,8 +8,9 @@ const path = {
   CHECKOUT: "checkout/",
   CART: "cart",
   PAYMENT: "payment",
-  DETAILS_PRODUCT: "do-choi-me-be/",
-  PRODUCT_INFO: "ba-lo-nam-thoi-trang-cao-cap-phong-cach-moi",
+  DETAILS_PRODUCT: ":category/",
+
+  PRODUCT_INFO: ":category/:id/:title",
   NOFICATION: "notification",
   LOGIN_SUCCESS: "login-success/:userId/:tokenLogin",
   ORDERHISTORY: "order/history",
