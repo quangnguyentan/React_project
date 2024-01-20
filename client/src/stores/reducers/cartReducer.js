@@ -1,4 +1,5 @@
 import actionType from "../actions/actionType";
+import { totalCart } from "../actions/cartAction";
 
 const init = {
   cartItems: [],
@@ -33,6 +34,11 @@ const cartReducer = (state = init, action) => {
       return {
         ...state,
         cartItems: [],
+      };
+    case actionType.TOTAL_CART:
+      return {
+        ...state,
+        totalCart: action.payload,
       };
     default:
       return state;

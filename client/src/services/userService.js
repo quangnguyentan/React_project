@@ -14,3 +14,19 @@ export const apigetCurrent = () =>
       reject(error);
     }
   });
+
+export const postDataCart = (cart) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: "/user/get-one", // Thay thế "/your-endpoint" bằng đường dẫn của bạn
+        data: {
+          cart: cart,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

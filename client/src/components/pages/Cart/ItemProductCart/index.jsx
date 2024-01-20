@@ -7,9 +7,11 @@ import {
   updateQuantityAction,
 } from "../../../../stores/actions/cartAction";
 import { formatMoney, totalPrice } from "../../../../utils/helper";
+import Modal from "../../../atoms/Modal";
 const { RiDeleteBin6Line, GoPlus, FiMinus } = icons;
 function ItemProductCart(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
+
   const dispatch = useDispatch();
   const updateQuantity = (productId, newQuantity) => {
     // Dispatch the updateQuantityAction to update the quantity in the Redux store
@@ -97,9 +99,11 @@ function ItemProductCart(props) {
                 <sub>₫</sub>
               </div>
               <span className="cursor-pointer">
-                <RiDeleteBin6Line
-                  onClick={() => handleRemoveCart(product.id)}
-                />
+                <Modal
+                  icon={<RiDeleteBin6Line></RiDeleteBin6Line>}
+                  handleRemoveCart={handleRemoveCart}
+                  productId={product.id}
+                ></Modal>
               </span>
             </div>
           </div>

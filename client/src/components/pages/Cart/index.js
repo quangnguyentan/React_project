@@ -8,6 +8,7 @@ import { productList } from "../../../utils/datatest";
 import PriceProductCart from "./PriceProductCart";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAllCart } from "../../../stores/actions/cartAction";
+import Modal from "../../atoms/Modal";
 const { CiStar, RiDeleteBin6Line } = icons;
 const Cart = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,10 @@ const Cart = () => {
                     <span>Số lượng</span>
                     <span>Thành tiền</span>
                     <span>
-                      <RiDeleteBin6Line onClick={handleRemoveCartAll} />
+                      <Modal
+                        icon={<RiDeleteBin6Line></RiDeleteBin6Line>}
+                        handleRemoveCartAll={handleRemoveCartAll}
+                      ></Modal>
                     </span>
                   </div>
                 </div>

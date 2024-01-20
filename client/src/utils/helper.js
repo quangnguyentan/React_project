@@ -20,3 +20,10 @@ export const totalPrice = (price, quantity) => {
   let total = price * quantity;
   return total;
 };
+export const calculateTotal = (cartItems) => {
+  let total = 0;
+  cartItems.forEach((product) => {
+    total += totalPrice(product.price, product.quantities);
+  });
+  return total;
+};

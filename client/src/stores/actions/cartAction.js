@@ -27,3 +27,9 @@ export const removeAllCart = () => {
     type: actionType.REMOVE_ALL_CART,
   };
 };
+export const totalCart = (totalCart) => {
+  return {
+    type: actionType.TOTAL_CART,
+    payload: totalCart,
+  };
+};

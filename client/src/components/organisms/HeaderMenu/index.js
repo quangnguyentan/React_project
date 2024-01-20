@@ -34,7 +34,7 @@ const HeaderMenu = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   return (
-    <div className="flex items-start flex-4 py-2 justify-end relative">
+    <div className="flex items-start flex-4 py-2 justify-end relative ">
       {navigation.map((el) => {
         if (el.children) {
           return (
@@ -59,7 +59,7 @@ const HeaderMenu = () => {
               </NavLink>
 
               {showDropdown ? (
-                <ul className="absolute bg-white z-10 top-full left-[-120px] w-[250px] rounded-md shadow-md ">
+                <ul className="absolute bg-white z-10 top-full left-[-120px] w-[250px] rounded-md shadow-md flex flex-col gap-2">
                   {el.children.map((child) => (
                     <li
                       onClick={() => {

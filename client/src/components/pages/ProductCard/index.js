@@ -3,16 +3,15 @@ import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
 import { Link, useParams } from "react-router-dom";
 import path from "../../../utils/path";
-
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../stores/actions/cartAction";
-import { productList } from "../../../utils/datatest";
-
 import { apiGetProductById } from "../../../services/productService";
 import { formatMoney } from "../../../utils/helper";
+import { Bounce, toast } from "react-toastify";
 
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const [product, setProduct] = useState(null);
   const { category, id, title } = useParams();
   const getProductById = async (id) => {
@@ -27,14 +26,41 @@ const ProductCard = () => {
 
   const dispatch = useDispatch();
   const handleAddToCart = (quantity) => {
-    const newCartItem = {
-      id: product?._id,
-      img: product?.thumb?.[0]?.split(",")[0].split(" ")[0],
-      quantities: quantity,
-      title: product?.title,
-      price: product?.prices, // Cần kiểm tra xem giá cần sửa đổi như thế nào dựa vào dữ liệu từ API
-    };
-    dispatch(addToCart(newCartItem));
+    const isProductInCart = cartItems.some((item) => item.id === product?._id);
+    console.log(isProductInCart);
+    if (isProductInCart) {
+      toast.warn("Sản phẩm đã có ở giỏ hàng!!!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else {
+      const newCartItem = {
+        id: product?._id,
+        img: product?.thumb?.[0]?.split(",")[0].split(" ")[0],
+        quantities: quantity,
+        title: product?.title,
+        price: product?.prices, // Cần kiểm tra xem giá cần sửa đổi như thế nào dựa vào dữ liệu từ API
+      };
+      dispatch(addToCart(newCartItem));
+      toast.success("sản phẩm đã được thêm vào giỏ hàng", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -205,7 +231,11 @@ const ProductCard = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <Button name="Mua ngay" fw />
+                <Link
+                  to={`/${path.CHECKOUT}${path.PAYMENT}?productId=${product?._id}&quantity=${quantity}`}
+                >
+                  <Button name="Mua ngay" fw />
+                </Link>
                 <Button
                   quantity={quantity}
                   handleOnclick={handleAddToCart}

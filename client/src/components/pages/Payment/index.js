@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import path from "../../../utils/path";
 import { Footer } from "../../organisms";
 import logo from "../../../assets/images/logo.png";
@@ -13,8 +13,53 @@ import {
   zalo_pay,
 } from "../../atoms/images";
 import { Button } from "../../atoms";
+import { useSelector } from "react-redux";
+import { formatMoney, totalPrice } from "../../../utils/helper";
+import { postDataCart } from "../../../services/userService";
+import { apiGetProductById } from "../../../services/productService";
 const { GiShop } = icons;
 const Payment = () => {
+  const cart = useSelector((state) => state.cart);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const productId = queryParams.get("productId");
+  const quantity = queryParams.get("quantity");
+  const getProductById = async (productId) => {
+    const response = await apiGetProductById(productId);
+    if (response?.success) setProduct(response?.productDatas);
+  };
+  useEffect(() => {
+    getProductById(productId);
+  }, []);
+  const [product, setProduct] = useState(null);
+
+  const { cartItems, totalCart } = cart;
+  const { price } = cartItems;
+
+  const { currentData } = useSelector((state) => state.user);
+  const placeOderKey = true;
+  // const handlePlaceOrder = async () => {
+  //   console.log(123);
+  //   try {
+  //     // Tạo dữ liệu giỏ hàng để gửi lên server
+  //     const cartData = cartItems.map((product) => ({
+  //       product: product._id, // Thay thế "_id" bằng trường ID của sản phẩm trong schema của bạn
+  //       quantity: product.quantities,
+  //       color: "black",
+  //     }));
+
+  //     // Gửi dữ liệu giỏ hàng lên server
+  //     const response = await postDataCart({ cart: cartData });
+
+  //     // Xử lý response từ server (nếu cần)
+  //     console.log("Order placed successfully:", response);
+
+  //     // Có thể thêm các bước xử lý sau khi đặt hàng thành công ở đây
+  //   } catch (error) {
+  //     // Xử lý lỗi (nếu có)
+  //     console.error("Error placing order:", error);
+  //   }
+  // };
   return (
     <>
       <div className="w-full bg-white h-[100px] flex items-center px-3 ">
@@ -33,40 +78,88 @@ const Payment = () => {
         <div className="w-[70%] mx-4 mt-8 mb-4 flex flex-col gap-4">
           <div className="bg-white rounded-md p-4 flex flex-col gap-8">
             <h3 className="font-bold text-lg">Thông tin đơn hàng</h3>
-            <div className="w-full h-[154px] border rounded-lg px-4 relative py-8">
-              <span className="absolute top-0 flex items-center gap-1 font-normal px-2 left-3 translate-y-[-50%] bg-white text-sm text-green-600">
-                <GiShop />
-                Gói: Giao thứ 4, trước 19h, 17/01
-              </span>
-              <div className="w-[60%] flex flex-col gap-2">
-                <div className="flex gap-8 justify-between">
-                  <span className="text-xs">GIAO TIẾT KIỆM</span>
-                  <div className="flex gap-1 items-center">
-                    <span className="text-sm line-through text-gray-500">
-                      42.000 ₫
-                    </span>
-                    <span className="font-medium text-green-600">MIỄN PHÍ</span>
+            {productId ? (
+              <div className="w-full h-[154px] border rounded-lg px-4 relative py-8">
+                <span className="absolute top-0 flex items-center gap-1 font-normal px-2 left-3 translate-y-[-50%] bg-white text-sm text-green-600">
+                  <GiShop />
+                  Gói : Giao thứ 4, trước 19h, 17/01
+                </span>
+                <div className="w-[60%] flex flex-col gap-2">
+                  <div className="flex gap-8 justify-between">
+                    <span className="text-xs">GIAO TIẾT KIỆM</span>
+                    <div className="flex gap-1 items-center">
+                      <span className="text-sm line-through text-gray-500">
+                        42.000 ₫
+                      </span>
+                      <span className="font-medium text-green-600">
+                        MIỄN PHÍ
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div className="flex gap-2 ">
-                  <img
-                    className="w-[48px] h-[48px]"
-                    src="https://salt.tikicdn.com/cache/96x96/ts/product/72/52/d2/f1e9e6e657aa4e777491d6ee7e7d79bf.PNG.webp"
-                    alt=""
-                  />
-                  <div className="flex flex-col gap-1 text-sm text-gray-500">
-                    <span className="overflow-hidden overflow-ellipsis line-clamp-1 ">
-                      Ba lô nam thời trang cao cấp phong cách mới 15,6" - Màu
-                      đen abcadsd xasxas
-                    </span>
-                    <div className="flex justify-between">
-                      <span>SL: x1</span>
-                      <span>441.000 ₫</span>
+                  <div className="flex gap-2 ">
+                    <img
+                      className="w-[48px] h-[48px]"
+                      src={product?.thumb?.[0]?.split(",")[0].split(" ")[0]}
+                      alt=""
+                    />
+                    <div className="flex flex-col gap-1 text-sm text-gray-500">
+                      <span className="overflow-hidden overflow-ellipsis line-clamp-1 ">
+                        {product?.title}
+                      </span>
+                      <div className="flex justify-between">
+                        <span>SL: x{quantity}</span>
+                        <span>
+                          {formatMoney(totalPrice(quantity, product?.prices))} ₫
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              cartItems.map((product, index) => (
+                <div className="w-full h-[154px] border rounded-lg px-4 relative py-8">
+                  <span className="absolute top-0 flex items-center gap-1 font-normal px-2 left-3 translate-y-[-50%] bg-white text-sm text-green-600">
+                    <GiShop />
+                    Gói {index + 1}: Giao thứ 4, trước 19h, 17/01
+                  </span>
+                  <div className="w-[60%] flex flex-col gap-2">
+                    <div className="flex gap-8 justify-between">
+                      <span className="text-xs">GIAO TIẾT KIỆM</span>
+                      <div className="flex gap-1 items-center">
+                        <span className="text-sm line-through text-gray-500">
+                          42.000 ₫
+                        </span>
+                        <span className="font-medium text-green-600">
+                          MIỄN PHÍ
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 ">
+                      <img
+                        className="w-[48px] h-[48px]"
+                        src={product.img}
+                        alt=""
+                      />
+                      <div className="flex flex-col gap-1 text-sm text-gray-500">
+                        <span className="overflow-hidden overflow-ellipsis line-clamp-1 ">
+                          {product.title}
+                        </span>
+                        <div className="flex justify-between">
+                          <span>SL: x{product.quantities}</span>
+                          <span>
+                            {formatMoney(
+                              totalPrice(product.quantities, product.price)
+                            )}{" "}
+                            ₫
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
           <div className="bg-white rounded-md p-4 flex flex-col gap-8">
             <h3>Chọn hình thức thanh toán</h3>
@@ -106,7 +199,7 @@ const Payment = () => {
           <div className="bg-white rounded-md p-4">
             <h3 className="font-normal text-lg text-gray-400">Giao tới</h3>
             <div className="flex gap-2 items-center font-medium">
-              <span>Nguyễn Tấn Quang</span>
+              <span>{currentData?.fullname}</span>
               <p className=" w-[1px] bg-black h-[20px]"></p>
               <span>0938915502</span>
             </div>
@@ -148,12 +241,20 @@ const Payment = () => {
               <div className="flex justify-between">
                 <span className="text-sm font-medium">Tổng tiền</span>
                 <span className="text-xl font-medium text-red-500">
-                  416.000 ₫
+                  {!productId
+                    ? formatMoney(totalCart)
+                    : formatMoney(totalPrice(quantity, product?.prices))}
+                  ₫
                 </span>
               </div>
             </div>
             <div className=" w-full h-[60px] ">
-              <Button name="Đặt hàng" fw />
+              <Button
+                name="Đặt hàng"
+                fw
+                placeOderKey={placeOderKey}
+                // handlePlaceOrder={handlePlaceOrder}
+              />
             </div>
           </div>
         </div>

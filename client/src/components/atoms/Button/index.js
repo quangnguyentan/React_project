@@ -8,6 +8,10 @@ const Button = ({
   iconAfter,
   fw,
   quantity,
+  handleTotalCart,
+  handlePlaceOrder,
+  totalCartKey,
+  placeOderKey,
 }) => {
   return (
     <button
@@ -19,7 +23,15 @@ const Button = ({
               fw ? "w-full" : "w-[410px] px-4 ml-4"
             } px-4 py-2 rounded-md text-white bg-red-500 hover:bg-gray-700`
       }
-      onClick={quantity ? () => handleOnclick(quantity) : handleOnclick}
+      onClick={
+        quantity
+          ? () => handleOnclick(quantity)
+          : totalCartKey
+          ? handleTotalCart
+          : placeOderKey
+          ? handlePlaceOrder
+          : handleOnclick
+      }
     >
       {iconsBefore}
       <span>{name}</span>

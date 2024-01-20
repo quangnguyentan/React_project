@@ -1,19 +1,24 @@
 import React from "react";
 import { Button } from "../../../atoms";
 import { CiStar } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import path from "../../../../utils/path";
 import { Link } from "react-router-dom";
-import { formatMoney, totalPrice } from "../../../../utils/helper";
+import {
+  calculateTotal,
+  formatMoney,
+  totalPrice,
+} from "../../../../utils/helper";
+import { totalCart } from "../../../../stores/actions/cartAction";
 
 export default function PriceProductCart() {
+  const totalCartKey = true;
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const calculateTotal = () => {
-    let total = 0;
-    cartItems.forEach((product) => {
-      total += totalPrice(product.price, product.quantities);
-    });
-    return total;
+  const dispatch = useDispatch();
+
+  const handleTotalCart = (cartItems) => {
+    console.log(123);
+    dispatch(totalCart(calculateTotal(cartItems)));
   };
 
   return (
@@ -64,7 +69,7 @@ export default function PriceProductCart() {
               <span>Tổng tiền</span>
               <div className="flex flex-col ">
                 <div className="flex justify-end text-red-500  text-2xl">
-                  {formatMoney(calculateTotal())}
+                  {formatMoney(calculateTotal(cartItems))}
                   <sub className="">đ</sub>
                 </div>
                 <span className="font-light text-xs">
@@ -75,7 +80,12 @@ export default function PriceProductCart() {
           </div>
           <Link to={`/${path.CHECKOUT}${path.PAYMENT}`}>
             <div className="flex flex-col gap-2">
-              <Button name="Mua ngay (1)" fw />
+              <Button
+                name="Mua ngay (1)"
+                fw
+                totalCartKey={totalCartKey}
+                handleTotalCart={() => handleTotalCart(cartItems)}
+              />
             </div>
           </Link>
         </div>
