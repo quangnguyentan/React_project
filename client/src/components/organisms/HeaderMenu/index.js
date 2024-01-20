@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { Link, NavLink, Navigate, useNavigate } from "react-router-dom";
 import { navigation } from "../../../utils/constant";
 import path from "../../../utils/path";
 import { logout } from "../../../stores/actions/authAction";
 import { apigetCurrent } from "../../../services/userService";
+import cart from "../../../assets/images/cart.png";
+import { getCurrent } from "../../../stores/actions/userAction";
 
 const HeaderMenu = () => {
   const { isLoggedIn, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [isHovering, setIsHovering] = useState(false);
+  const { currentData } = useSelector((state) => state.user);
   // useEffect(() => {
   //   const fetchUser = async () => {
   //     let response = await apigetCurrent(token);
@@ -27,6 +30,12 @@ const HeaderMenu = () => {
   const handleMouseEnter = () => {
     setShowDropdown(true);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      isLoggedIn && dispatch(getCurrent());
+    }, 100);
+  }, [isLoggedIn]);
 
   const handleMouseLeave = () => {
     setShowDropdown(false);
@@ -118,6 +127,27 @@ const HeaderMenu = () => {
           );
         }
       })}
+      <span className="after:pr-[1px] after:bg-gray-300 after:mr-[20px] after:align-center after:mt-2 mt-2 "></span>
+      <Link
+        className="flex mr-[30px]"
+        to={isLoggedIn ? `/${path.CHECKOUT}${path.CART}` : `/${path.LOGIN}`}
+      >
+        <div className="flex ">
+          <img
+            src={cart}
+            alt=""
+            className="hover:rounded-md flex my-1 justify-center items-center
+      w-[30px] h-[30px]  "
+          />
+          <span className="border text-white text-xs font-semibold w-[25px] h-[15px] justify-center flex items-center bg-red-500 rounded-[50%] border-red-500">
+            {isLoggedIn ? currentData?.cart?.length : 0}
+          </span>
+        </div>
+      </Link>
+      {/* image: cart, css: "hover:rounded-md flex gap-1 justify-center items-center
+      w-[40px] h-[40px] before:h-[20px] before:bg-gray-300 before:mr-[20px]
+      before:ml-[-20px] before:align-center ml-[30px] mr-[10px]
+      before:pr-[1px]", path: , */}
     </div>
   );
 };

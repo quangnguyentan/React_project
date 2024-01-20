@@ -19,6 +19,11 @@ import {
 } from "./pages/index";
 import path from "./utils/path";
 import React from "react";
+import {
+  HighPrice,
+  LowPirce,
+  NewProduct,
+} from "./components/organisms/ProductActive";
 
 function App() {
   return (
@@ -28,6 +33,9 @@ function App() {
           <Route path={path.HOME} element={<Home />} />
           <Route path={path.DETAILS_PRODUCT} element={<DetailsProduct />}>
             <Route path={path.TOP_SELLER} element={<TopSeller />} />
+            <Route path={path.NEW_PRODUCT} element={<NewProduct />} />
+            <Route path={path.HIGH_PRICE} element={<HighPrice />} />
+            <Route path={path.LOW_PRICE} element={<LowPirce />} />
           </Route>
           <Route path={path.CHECKOUT}>
             <Route path={path.CART} element={<Cart />} />

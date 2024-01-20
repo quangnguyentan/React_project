@@ -9,13 +9,15 @@ const path = {
   CART: "cart",
   PAYMENT: "payment",
   DETAILS_PRODUCT: ":category/",
-
   PRODUCT_INFO: ":category/:id/:title",
   NOFICATION: "notification",
   LOGIN_SUCCESS: "login-success/:userId/:tokenLogin",
   ORDERHISTORY: "order/history",
   ADDRESS: "address",
   PAYMENTCART: "paymentcard",
-  TOP_SELLER: "top-seller",
+  TOP_SELLER: "ban-chay",
+  NEW_PRODUCT: "hang-moi",
+  LOW_PRICE: "low-price",
+  HIGH_PRICE: "high-price",
 };
 export default path;

@@ -3,8 +3,12 @@ require("dotenv").config();
 export const getCurrentService = (id) =>
   new Promise(async (resolve, reject) => {
     try {
-      let response = await User.findOne({
-        id,
+      let response = await User.findOne({ id }).populate({
+        path: "cart",
+        populate: {
+          path: "product",
+          select: "title thumb prices",
+        },
       });
 
       resolve({

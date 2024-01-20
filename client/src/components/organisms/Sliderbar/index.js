@@ -8,12 +8,10 @@ const Slidebar = () => {
   return (
     <div className="overflow-y-auto max-h-[529px] scrollbar-hide ">
       <p className="font-semibold px-2 py-2 text-sm">Danh mục</p>
-      {categories.map((el) => (
-        <div
-          key={el.id}
-          className="py-2 px-4 mx-2 break-words whitespace-normal hover:rounded-lg hover:bg-gray-200 text-sm"
-        >
+      {categories.map((el, index) => (
+        <div className="py-2 px-4 mx-2 break-words whitespace-normal hover:rounded-lg hover:bg-gray-200 text-sm">
           <NavLink
+            key={el.id}
             to={createSlug(el.categoryName)}
             className="flex gap-2 items-center "
           >

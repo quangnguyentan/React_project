@@ -6,4 +6,4 @@ export { default as Footer } from "./Footer";
 export { default as SliderCate } from "./SliderBarCate";
 export { default as Products } from "./Products";
 export { default as CustomSlide } from "./CustomSlide";
-export { default as TopSeller } from "./TopSeller";
+export { default as TopSeller } from "./ProductActive/TopSeller";

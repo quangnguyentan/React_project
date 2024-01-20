@@ -1,7 +1,6 @@
 import home from "../assets/images/home.png";
 import account from "../assets/images/Account.png";
 import path from "./path";
-import cart from "../assets/images/cart.png";
 import {
   me_be,
   diengiadung,
@@ -49,7 +48,7 @@ export const navigation = [
     id: 2,
     value: "Tài khoản",
     image: account,
-    css: "hover:rounded-md flex gap-1 justify-center items-center w-[118px] h-[40px] ",
+    css: "hover:rounded-md flex gap-1 justify-center items-center w-[140px] h-[40px] after:h-[20px] ",
     path: `/${path.ACCOUNT}`,
     children: [
       {
@@ -67,12 +66,6 @@ export const navigation = [
         value: "Đăng xuất",
       },
     ],
-  },
-  {
-    id: 6,
-    image: cart,
-    css: "hover:rounded-md flex gap-1 justify-center items-center w-[40px] h-[40px] before:h-[20px] before:bg-gray-300 before:mr-[20px] before:ml-[-20px] before:align-center ml-[30px] mr-[10px] before:pr-[1px]",
-    path: `/${path.CHECKOUT}${path.CART}`,
   },
 ];
 export const customerTabs = [
@@ -278,4 +271,25 @@ export const categories = [
     categoryName: "Sản phẩm Tài chính - Bảo hiểm",
     categoryImage: sanphamtaichinh,
   },
+];
+
+export const color = [
+  "Hồng",
+  "Xanh dương",
+  "Vàng",
+  "Đỏ",
+  "Trắng",
+  "Xanh lá",
+  "Đen",
+  "Cam",
+  "Tím",
+  "Nâu",
+  "Bạc",
+  "Kem",
+];
+export const price = [
+  "60.000 → 160.000",
+  "160.000 → 400.000",
+  "400.000 → 600.000",
+  "Trên 600.000",
 ];

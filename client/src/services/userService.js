@@ -14,3 +14,38 @@ export const apigetCurrent = () =>
       reject(error);
     }
   });
+
+export const apiUpdateCart = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: "/user/cart",
+        data,
+        // headers: {
+        //   authentication: token,
+        // },
+      });
+      console.log(data);
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const apiRemoveCart = (pid) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "DELETE",
+        url: "/user/remove-cart/" + pid,
+        // headers: {
+        //   authentication: token,
+        // },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

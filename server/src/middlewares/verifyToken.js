@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 require("dotenv").config();
-const verifyToken = (req, res, next) => {
+export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
   console.log("token", token);
   if (!token) {
@@ -20,4 +20,13 @@ const verifyToken = (req, res, next) => {
     next();
   });
 };
-module.exports = verifyToken;
+export const isAdmin = (req, res, next) => {
+  const { role } = req.user;
+  console.log(role);
+  if (role === "admin")
+    return res.status(401).json({
+      success: false,
+      mes: "Requested admin role",
+    });
+  next();
+};

@@ -1,10 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../atoms";
 import { Link, Navigate } from "react-router-dom";
 import path from "../../../utils/path";
 import icons from "../../../utils/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrent } from "../../../stores/actions/userAction";
+import {
+  apiGetProduct,
+  apiGetProductById,
+} from "../../../services/productService";
+import { formatMoney } from "../../../utils/helper";
+import { apiRemoveCart } from "../../../services/userService";
 const { CiStar, RiDeleteBin6Line, CiDeliveryTruck, GoPlus, FiMinus } = icons;
 const Cart = () => {
+  const [quantity, setQuantity] = useState(1);
+  const { token, isLoggedIn } = useSelector((state) => state.auth);
+  const { currentData } = useSelector((state) => state.user);
+  console.log(currentData);
+  const dispatch = useDispatch();
+  const getApiProduct = async () => {
+    const response = await apiGetProduct({
+      title: currentData?.cart[0]?.product?.title,
+    });
+    console.log(response);
+  };
+  const handleRemoveProduct = async (id) => {
+    console.log(id);
+    const response = await apiRemoveCart(id);
+    console.log(response);
+    if (response?.success) dispatch(getCurrent());
+  };
+  useEffect(() => {
+    getApiProduct();
+  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     isLoggedIn && dispatch(getCurrent());
+  //   }, 100);
+  // }, [isLoggedIn]);
+
   return (
     <div className="w-main flex flex-col  ">
       <div className="w-full flex">
@@ -28,67 +62,74 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-
-            <div className="mx-4  flex ">
-              <div className="bg-white w-full p-4 rounded-xl">
-                <div className="flex justify-between items-center ">
-                  <div className=" w-[324px] gap-2 flex ">
-                    <input type="checkbox" />
-                    <div className="w-[80px] h-[80px]">
-                      <img
-                        src="https://salt.tikicdn.com/cache/w160/ts/product/72/52/d2/f1e9e6e657aa4e777491d6ee7e7d79bf.PNG.webp"
-                        alt=""
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1 w-[202px]">
-                      <span className="overflow-ellipsis overflow-hidden text-sm font-normal">
-                        Ba lô nam thời trang cao cấp phong cách mới 15,6" - Màu
-                        đen
-                      </span>
-                      <span className="text-xs text-gray-400">Màu đen</span>
-                      <div className="flex gap-2 text-xs  font-normal">
-                        <span className="w-[32px] h-[16px]">
-                          {/* <CiDeliveryTruck className="w-full" /> */}
+            {currentData?.cart &&
+              currentData?.cart?.map((el) => (
+                <div className="mx-4   flex " key={el._id}>
+                  <div className="bg-white w-full p-4 rounded-xl">
+                    <div className="flex justify-between items-center ">
+                      <div className=" w-[324px] gap-2 flex ">
+                        <input type="checkbox" />
+                        <div className="w-[80px] h-[80px]">
                           <img
-                            src="https://salt.tikicdn.com/cache/w96/ts/tka/65/be/89/d0c3208134f19e4bab8b50d81b41933a.png"
+                            src={
+                              el?.product?.thumb?.[0]
+                                ?.split(",")[0]
+                                .split(" ")[0]
+                            }
                             alt=""
                           />
-                        </span>
-                        <span> Giao thứ 2, 15/01</span>
+                        </div>
+                        <div className="flex flex-col gap-1 w-[202px]">
+                          <span className="overflow-ellipsis overflow-hidden text-sm font-normal">
+                            {el?.product?.title}
+                          </span>
+                          <span className="text-xs text-gray-400">Màu đen</span>
+                          <div className="flex gap-2 text-xs  font-normal">
+                            <span className="w-[32px] h-[16px]">
+                              {/* <CiDeliveryTruck className="w-full" /> */}
+                              <img
+                                src="https://salt.tikicdn.com/cache/w96/ts/tka/65/be/89/d0c3208134f19e4bab8b50d81b41933a.png"
+                                alt=""
+                              />
+                            </span>
+                            <span> Giao thứ 2, 15/01</span>
+                          </div>
+                        </div>
                       </div>
+                      <div className="flex">
+                        {formatMoney(el?.product?.prices)}
+                        <sub>₫</sub>
+                      </div>
+                      <div>
+                        <div className="flex">
+                          <div className="w-[23px] h-[24px] rounded-l-sm border pl-[2px] ">
+                            <button className="">
+                              <FiMinus />
+                            </button>
+                          </div>
+                          <div className="w-[32px] h-[24px]  border">
+                            <span className="p-3">{el?.quantity}</span>
+                          </div>
+                          <div className="w-[23px] h-[24px] rounded-r-sm border pl-[2px] ">
+                            <button className="">
+                              <GoPlus />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex">
+                        {formatMoney(el?.product?.prices * el?.quantity)}
+                        <sub>₫</sub>
+                      </div>
+                      <span
+                        onClick={() => handleRemoveProduct(el?.product?._id)}
+                      >
+                        <RiDeleteBin6Line />
+                      </span>
                     </div>
                   </div>
-                  <div className="flex">
-                    441.000
-                    <sub>₫</sub>
-                  </div>
-                  <div>
-                    <div className="flex">
-                      <div className="w-[23px] h-[24px] rounded-l-sm border pl-[2px] ">
-                        <button className="">
-                          <FiMinus />
-                        </button>
-                      </div>
-                      <div className="w-[32px] h-[24px]  border">
-                        <span className="p-3">1</span>
-                      </div>
-                      <div className="w-[23px] h-[24px] rounded-r-sm border pl-[2px] ">
-                        <button className="">
-                          <GoPlus />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex">
-                    441.000
-                    <sub>₫</sub>
-                  </div>
-                  <span>
-                    <RiDeleteBin6Line />
-                  </span>
                 </div>
-              </div>
-            </div>
+              ))}
           </div>
           <div className="w-[96%] m-4 bg-white rounded-lg">
             <div className="m-4 flex ">

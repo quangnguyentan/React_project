@@ -31,14 +31,20 @@ const getProducts = async (req, res) => {
   if (queries?.title) {
     fomatedQueries.title = { $regex: queries.title, $options: "i" };
   }
-  if (queries?.category)
-    fomatedQueries.category = { $regex: queries.category, $options: "i" };
+
+  if (queries?.brand) {
+    fomatedQueries.brand = { $regex: queries.brand, $options: "i" };
+  }
+  if (queries?.type)
+    fomatedQueries.type = { $regex: queries.type, $options: "i" };
   if (queries?.color) {
     delete fomatedQueries.color;
     const colorArr = queries.color?.split(",");
+
     const colorQuery = colorArr.map((el) => ({
       color: { $regex: el, $options: "i" },
     }));
+
     colorQueryObject = { $or: colorQuery };
   }
   const q = { ...colorQueryObject, ...fomatedQueries };
@@ -91,6 +97,7 @@ const getProductById = async (req, res) => {
     productDatas: products ? products : "Cannot get products by id",
   });
 };
+
 module.exports = {
   createProduct,
   getProducts,

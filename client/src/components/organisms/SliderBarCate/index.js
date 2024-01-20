@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icons from "../../../utils/icons";
 import { Input } from "../../atoms";
+import { color, price } from "../../../utils/constant";
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 const { FaMapMarkerAlt, CiStar } = icons;
 
 const data = [
@@ -21,10 +28,31 @@ const SliderCate = () => {
     from: "0",
     to: "0",
   });
-
-  const handleValueChange = (e) => {
-    console.log(e);
+  const navigate = useNavigate();
+  const { category } = useParams();
+  const [selected, setSelected] = useState([]);
+  const handleSelect = (e) => {
+    const alreadyColor = selected.find((el) => el === e.target.value);
+    if (alreadyColor)
+      setSelected((prev) => prev.filter((el) => el !== e.target.value));
+    else setSelected((prev) => [...prev, e.target.value]);
   };
+  // console.log(selected);
+  // const handleValueChange = (e) => {
+  //   console.log(e);
+  // };
+  useEffect(() => {
+    if (selected.length > 0) {
+      navigate({
+        pathname: `/${category}`,
+        search: createSearchParams({
+          color: selected.join(","),
+        }).toString(),
+      });
+    } else {
+      navigate(`/${category}`);
+    }
+  }, [selected]);
   return (
     <div className="p-4 flex flex-col gap-4">
       {/* <div className="flex flex-col gap-1">
@@ -67,35 +95,34 @@ const SliderCate = () => {
       <div className="flex flex-col gap-2">
         <h3 className="text-sm font-medium">Giá</h3>
         <div className="flex flex-col gap-2">
-          <span className="cursor-pointer rounded-2xl bg-gray-200  p-1 px-2 w-fit   text-sm">
-            60.000 → 160.000
-          </span>
-          <span className=" cursor-pointer rounded-2xl bg-gray-200 p-1 px-2 w-fit  text-sm">
-            160.000 → 400.000
-          </span>
-          <span className=" cursor-pointer rounded-2xl bg-gray-200 p-1 px-2 w-fit  text-sm">
-            400.000 → 600.000
-          </span>
-          <span className=" cursor-pointer rounded-2xl bg-gray-200 p-1 w-fit px-2 text-sm">
-            Trên 600.000
-          </span>
+          {price?.map((el, index) => (
+            <span
+              key={index}
+              className="cursor-pointer rounded-2xl bg-gray-200  p-1 px-2 w-fit   text-sm"
+            >
+              {el}
+            </span>
+          ))}
+
           <span className="text-xs text-gray-400">Chọn khoảng giá</span>
           <div className="flex gap-1">
             <input
               value={prices.from}
-              // onChange={(e) =>
-              //   setPrices((prev) => ({ ...prev, from: e.target.value }))
-              // }
+              onChange={(e) =>
+                setPrices((prev) => ({ ...prev, from: e.target.value }))
+              }
+              id="from"
               type="number"
               className="border-black border rounded-md w-[77px] h-[30px] placeholder:text-black  px-2 outline-none "
             />
             <span>-</span>
             <input
               value={prices.to}
-              // onChange={(e) =>
-              //   setPrices((prev) => ({ ...prev, to: e.target.value }))
-              // }
+              onChange={(e) =>
+                setPrices((prev) => ({ ...prev, to: e.target.value }))
+              }
               type="number"
+              id="to"
               className="border-black border rounded-md w-[77px] h-[30px] px-2 placeholder:text-black outline-none "
             />
           </div>
@@ -105,6 +132,23 @@ const SliderCate = () => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
+        <h3>Màu sắc</h3>
+        {color?.map((el, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              id={el}
+              name={el}
+              value={el}
+              className="w-[16px]"
+              type="checkbox"
+              onChange={handleSelect}
+              checked={selected.some((selectedItem) => selectedItem === el)}
+            />
+            <span className="text-sm">{el}</span>
+          </div>
+        ))}
+      </div>
+      {/* <div className="flex flex-col gap-2">
         <h3>Thương hiệu</h3>
         <div className="flex gap-2">
           <input className="w-[16px]" type="checkbox" />
@@ -117,7 +161,7 @@ const SliderCate = () => {
           <input className="w-[16px]" type="checkbox" />
           <span className="text-sm">2 - 4 tuổi</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
