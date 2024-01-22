@@ -36,6 +36,8 @@ const {
   MdOutlinePayment,
   IoLocationSharp,
   MdWorkHistory,
+  LuPackage,
+  MdManageAccounts,
 } = icons;
 export const navigation = [
   {
@@ -56,10 +58,31 @@ export const navigation = [
         value: "Thông tin tài khoản",
         path: `customer/${path.CUSTOMER}`,
       },
+      // {
+      //   id: 4,
+      //   value: "Đơn hàng của tôi",
+      //   path: `sales/${path.ORDERHISTORY}`,
+      // },
+      {
+        id: 5,
+        value: "Đăng xuất",
+      },
+    ],
+    childrenAdmin: [
+      {
+        id: 3,
+        value: "Thông tin tài khoản",
+        path: `${path.ADMIN}${path.CUSTOMER}`,
+      },
       {
         id: 4,
-        value: "Đơn hàng của tôi",
-        path: `sales/${path.ORDERHISTORY}`,
+        value: "Quản lí sản phẩm",
+        path: `${path.ADMIN}${path.MANAGET_PRODUCT}`,
+      },
+      {
+        id: 6,
+        value: "Quản lí người dùng ",
+        path: `${path.ADMIN}${path.MANAGER_USER}`,
       },
       {
         id: 5,
@@ -75,30 +98,90 @@ export const customerTabs = [
     icon: <FaUser size={16} />,
     path: path.CUSTOMER,
   },
-  {
-    id: 2,
-    value: "Thông báo của tôi",
-    icon: <IoMdNotifications size={16} />,
-    path: path.NOFICATION,
-  },
+  // {
+  //   id: 2,
+  //   value: "Thông báo của tôi",
+  //   icon: <IoMdNotifications size={16} />,
+  //   path: path.NOFICATION,
+  // },
   {
     id: 3,
     value: "Quản lí đơn hàng",
     icon: <MdWorkHistory size={16} />,
     path: path.MYACCOUNT[1] ? path.ORDERHISTORY : "",
   },
+  // {
+  //   id: 4,
+  //   value: "Sổ địa chỉ",
+  //   icon: <IoLocationSharp size={16} />,
+  //   path: path.ADDRESS,
+  // },
+  // {
+  //   id: 5,
+  //   value: "Thông tin thanh toán",
+  //   icon: <MdOutlinePayment size={16} />,
+  //   path: path.PAYMENTCART,
+  // },
+];
+export const customerTabsAdmin = [
   {
-    id: 4,
-    value: "Sổ địa chỉ",
-    icon: <IoLocationSharp size={16} />,
-    path: path.ADDRESS,
+    id: 1,
+    value: "Thông tin tài khoản",
+    icon: <FaUser size={16} />,
+    path: `/${path.ADMIN}${path.CUSTOMER}`,
+  },
+  {
+    id: 2,
+    value: "Quản lí sản phẩm",
+    icon: <MdManageAccounts size={16} />,
+    // path: `${path.MANAGET_PRODUCT}`,
+    productChildren: [
+      {
+        id: 3,
+        value: "Thêm sản phẩm",
+        icon: <MdManageAccounts size={16} />,
+        path: `${path.MANAGET_PRODUCT}/${path.CREATE_PRODUCT}`,
+      },
+      {
+        id: 4,
+        value: "Chỉnh sửa sản phẩm",
+        icon: <MdManageAccounts size={16} />,
+        path: `${path.MANAGET_PRODUCT}/${path.EDIT_PRODUCT}`,
+      },
+    ],
   },
   {
     id: 5,
-    value: "Thông tin thanh toán",
-    icon: <MdOutlinePayment size={16} />,
-    path: path.PAYMENTCART,
+    value: "Quản lí người dùng",
+    icon: <LuPackage size={16} />,
+    // path: `${path.MANAGER_USER}`,
+    userChildren: [
+      {
+        id: 6,
+        value: "Thêm người dùng",
+        icon: <MdManageAccounts size={16} />,
+        path: `${path.MANAGER_USER}/${path.CREATE_USER}`,
+      },
+      {
+        id: 7,
+        value: "Chỉnh sửa người dùng",
+        icon: <MdManageAccounts size={16} />,
+        path: `${path.MANAGER_USER}/${path.EDIT_USER}`,
+      },
+    ],
   },
+  // {
+  //   id: 4,
+  //   value: "Sổ địa chỉ",
+  //   icon: <IoLocationSharp size={16} />,
+  //   path: path.ADDRESS,
+  // },
+  // {
+  //   id: 5,
+  //   value: "Thông tin thanh toán",
+  //   icon: <MdOutlinePayment size={16} />,
+  //   path: path.PAYMENTCART,
+  // },
 ];
 const style = `after:w-[50px] after:bottom-[-3px] relative after:absolute after:border after:border-b-4 after:block after:right-[50%] after:border-blue-500 font-normal after:rounded-xl after:translate-x-[50%]`;
 const activeHover = `after:w-[50px] after:bottom-[-3px] relative after:absolute hover:after:border hover:after:border-b-4 after:block after:right-[50%] after:border-blue-500  after:rounded-xl after:translate-x-[50%]`;

@@ -14,7 +14,21 @@ export const apigetCurrent = () =>
       reject(error);
     }
   });
-
+export const apigetAllUser = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: "/user/get-all",
+        // headers: {
+        //   authorization: token,
+        // },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
 export const apiUpdateCart = (data) =>
   new Promise(async (resolve, reject) => {
     try {

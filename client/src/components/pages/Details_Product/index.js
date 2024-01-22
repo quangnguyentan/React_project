@@ -8,6 +8,7 @@ import {
   Navigate,
   Outlet,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
@@ -24,7 +25,7 @@ const DetailProduct = () => {
   const [activeTab, setActiveTab] = useState(1);
   const location = useLocation();
   const [params] = useSearchParams();
-
+  const navigate = useNavigate();
   const getProduct = async (queries) => {
     const data = [];
     const response = await apiGetProduct(queries);
@@ -51,7 +52,9 @@ const DetailProduct = () => {
   }, []);
   return (
     <>
-      {loading ? (
+      {!category ? (
+        navigate({ path: `/${path.HOME}` })
+      ) : loading ? (
         <div className="w-full h-[200px] flex items-center justify-center">
           <ClipLoader
             loading={loading}
@@ -63,10 +66,10 @@ const DetailProduct = () => {
         </div>
       ) : (
         <div className="flex w-main">
-          <div className="flex-2 flex rounded-md bg-opacity-90 bg-white m-4 ">
+          <div className="flex-2 flex rounded-md bg-opacity-90 bg-white m-4 h-[541px] overflow-y-auto scrollbar-hide ">
             <SliderCate />
           </div>
-          <div className="flex-8 flex ml-0 m-4">
+          <div className="flex-8 flex ml-0 m-4 h-[541px] overflow-y-auto scrollbar-hide">
             <div className=" w-full flex flex-col gap-2 ">
               <div className="bg-white p-4 flex flex-col gap-8 ">
                 <div className="flex flex-col gap-2">

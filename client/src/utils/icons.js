@@ -7,23 +7,27 @@ import {
   MdOutlineArrowBackIos,
   MdOutlinePayment,
   MdWorkHistory,
+  MdManageAccounts,
 } from "react-icons/md";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { FaUser } from "react-icons/fa6";
 import { IoLocationSharp, IoChevronBackOutline } from "react-icons/io5";
+import { LuPackage } from "react-icons/lu";
 import { CiStar } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRegEdit } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 const icons = {
   FaMapMarkerAlt,
   IoIosSearch,
   IoIosArrowForward,
+  MdManageAccounts,
   CiDeliveryTruck,
+  LuPackage,
   MdOutlineArrowBackIos,
   BsFillShieldLockFill,
   RiDeleteBin6Line,

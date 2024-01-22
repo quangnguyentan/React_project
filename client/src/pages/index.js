@@ -14,3 +14,5 @@ export { default as DetailsProduct } from "./detail_product/";
 export { default as ProductCard } from "./product_card/";
 export { default as TopSeller } from "./sort-detail";
 export { default as Payment } from "./payment/";
+export { default as ProdManager } from "./admin/ProManager/";
+export { default as UserManager } from "./admin/UserManager/";

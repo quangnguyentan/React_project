@@ -16,6 +16,8 @@ import {
   ProductCard,
   TopSeller,
   Payment,
+  ProdManager,
+  UserManager,
 } from "./pages/index";
 import path from "./utils/path";
 import React from "react";
@@ -24,8 +26,17 @@ import {
   LowPirce,
   NewProduct,
 } from "./components/organisms/ProductActive";
+import { useSelector } from "react-redux";
+import {
+  CreateProd,
+  CreateUser,
+  EditProd,
+  EditUser,
+} from "./components/organisms";
 
 function App() {
+  const { current } = useSelector((state) => state.auth);
+  console.log(path.MYACCOUNT[2]);
   return (
     <div className=" bg-gray-100 ">
       <Routes>
@@ -54,11 +65,30 @@ function App() {
               <Route path={path.ORDERHISTORY} element={<Order />} />
             </Route>
           )}
+          {current === "admin" && path.MYACCOUNT[2] && (
+            <Route Route path={path.MYACCOUNT[2]} element={<MyAccount />}>
+              <Route path={path.CUSTOMER} element={<Account />} />
+              <Route path={path.MANAGER_USER} element={<UserManager />}>
+                <Route path={path.CREATE_USER} element={<CreateUser />} />
+                <Route path={path.EDIT_USER} element={<EditUser />} />
+              </Route>
+              <Route path={path.MANAGET_PRODUCT} element={<ProdManager />}>
+                <Route path={path.CREATE_PRODUCT} element={<CreateProd />} />
+                <Route path={path.EDIT_PRODUCT} element={<EditProd />} />
+              </Route>
+            </Route>
+          )}
           {/* <Route path={path.DETAILS_PRODUCT} element={<Details_Product />} /> */}
           <Route path={path.PRODUCT_INFO} element={<ProductCard />} />
+          <Route path={path.ALL} element={<Home />} />
         </Route>
-
+        {/* <Route path={path.ADMIN} element={<AdminLayOut />}>
+          <Route path={path.DASHBOARD} element={DashBoard} />
+          <Route path={path.MANAGER_USER} element={UserManager} />
+          <Route path={path.MANAGET_PRODUCT} element={ProdManager} />
+        </Route> */}
         <Route path={path.LOGIN} element={<Login />} />
+
         <Route path={path.LOGIN_SUCCESS} element={<LoginSuccess />} />
       </Routes>
     </div>

@@ -10,34 +10,68 @@ import {
   apiGetProductById,
 } from "../../../services/productService";
 import { formatMoney } from "../../../utils/helper";
-import { apiRemoveCart } from "../../../services/userService";
+import { apiRemoveCart, apiUpdateCart } from "../../../services/userService";
 const { CiStar, RiDeleteBin6Line, CiDeliveryTruck, GoPlus, FiMinus } = icons;
 const Cart = () => {
-  const [quantity, setQuantity] = useState(1);
-  const { token, isLoggedIn } = useSelector((state) => state.auth);
-  const { currentData } = useSelector((state) => state.user);
-  console.log(currentData);
   const dispatch = useDispatch();
+
+  const { currentData } = useSelector((state) => state.user);
+  const [products, setProducts] = useState(null);
+  const [user, setUser] = useState([]);
   const getApiProduct = async () => {
     const response = await apiGetProduct({
       title: currentData?.cart[0]?.product?.title,
     });
-    console.log(response);
+    if (response?.success) setProducts(response?.products);
   };
   const handleRemoveProduct = async (id) => {
-    console.log(id);
     const response = await apiRemoveCart(id);
-    console.log(response);
     if (response?.success) dispatch(getCurrent());
+    localStorage.removeItem(id);
   };
   useEffect(() => {
     getApiProduct();
   }, []);
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     isLoggedIn && dispatch(getCurrent());
-  //   }, 100);
-  // }, [isLoggedIn]);
+  const getLocal = (id) => localStorage.getItem(id);
+  const handleChange = (e) => {
+    const { checked, id, name } = e.target;
+    if (name === "all-checkbox") {
+      const allUser = currentData?.cart?.map((user) => {
+        return { ...user, isChecked: checked };
+      });
+      setUser(allUser);
+    } else {
+      const findUser = currentData?.cart?.find((user) =>
+        user?.product?._id === id ? { ...user, isChecked: checked } : user
+      );
+      setUser(findUser);
+      localStorage.setItem(id, JSON.stringify(checked));
+    }
+  };
+
+  const handleQuantity = async (id, type) => {
+    let local = getLocal(id);
+
+    const findProduct = currentData?.cart?.find((el) => el.product?._id === id);
+
+    if (type === "increase" && findProduct) {
+      const updatedQuantity = Number(local) + 1;
+      localStorage.setItem(id, JSON.stringify(updatedQuantity));
+      setTimeout(() => {
+        findProduct.quantity = updatedQuantity;
+        dispatch(getCurrent());
+      }, 100);
+    } else {
+      if (type === "reduce" && findProduct) {
+        const updatedQuantity = Number(local) - 1;
+        localStorage.setItem(id, JSON.stringify(updatedQuantity));
+        setTimeout(() => {
+          findProduct.quantity = updatedQuantity;
+          dispatch(getCurrent());
+        }, 100);
+      }
+    }
+  };
 
   return (
     <div className="w-main flex flex-col  ">
@@ -49,7 +83,12 @@ const Cart = () => {
               <div className="bg-white w-full p-4 rounded-xl">
                 <div className="flex justify-between items-center ">
                   <div className="flex gap-2 w-[324px] ">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      name="all-checkbox"
+                      // checked={getLocal(user)}
+                      onChange={handleChange}
+                    />
                     <span>Tất cả </span>
                     <span>(2 sản phẩm)</span>
                   </div>
@@ -68,7 +107,13 @@ const Cart = () => {
                   <div className="bg-white w-full p-4 rounded-xl">
                     <div className="flex justify-between items-center ">
                       <div className=" w-[324px] gap-2 flex ">
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          id={el?._id}
+                          // checked={Boolean(getLocal(el?._id))}
+                          onChange={handleChange}
+                        />
+
                         <div className="w-[80px] h-[80px]">
                           <img
                             src={
@@ -103,15 +148,27 @@ const Cart = () => {
                       <div>
                         <div className="flex">
                           <div className="w-[23px] h-[24px] rounded-l-sm border pl-[2px] ">
-                            <button className="">
+                            <button
+                              className=""
+                              onClick={() =>
+                                handleQuantity(el?.product?._id, "reduce")
+                              }
+                            >
                               <FiMinus />
                             </button>
                           </div>
                           <div className="w-[32px] h-[24px]  border">
-                            <span className="p-3">{el?.quantity}</span>
+                            <span id="product" className=" p-3">
+                              {getLocal(el?.product?._id)}
+                            </span>
                           </div>
                           <div className="w-[23px] h-[24px] rounded-r-sm border pl-[2px] ">
-                            <button className="">
+                            <button
+                              className=""
+                              onClick={() =>
+                                handleQuantity(el?.product?._id, "increase")
+                              }
+                            >
                               <GoPlus />
                             </button>
                           </div>
@@ -222,18 +279,26 @@ const Cart = () => {
             </div>
           </div>
           <div className="bg-white  rounded-xl p-4 flex-col flex gap-4">
-            <div className="flex justify-between text-gray-400">
+            {/* <div className="flex justify-between text-gray-400">
               <span className="">Tạm tính</span>
               <div className="flex  text-black">
                 224.100 <sub>₫</sub>
               </div>
-            </div>
+            </div> */}
 
             <div className="flex justify-between text-gray-400">
               <span>Tổng tiền</span>
               <div className="flex flex-col ">
                 <div className="flex justify-end text-red-500  text-2xl">
-                  224.100
+                  {currentData?.cart.length > 0
+                    ? formatMoney(
+                        currentData?.cart?.reduce(
+                          (sum, el) =>
+                            sum + el?.quantity * Number(el?.product?.prices),
+                          0
+                        )
+                      )
+                    : 0}
                   <sub className="">đ</sub>
                 </div>
                 <span className="font-light text-xs">
