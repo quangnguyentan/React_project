@@ -332,6 +332,12 @@ const type = (type) => {
   });
   return color;
 };
-console.log(type(variants));
+// console.log(type(variants));
 
 // console.log(Math.floor(Math.random(10) * 10) + 1);
+
+var d = new Date();
+console.log(d.getDate() + 2, d.getMonth() + 1);
+console.log(d.getDay() + 3);
+
+// console.log(d.getFullYear());

@@ -8,6 +8,7 @@ import {
   Navigate,
   Outlet,
   useLocation,
+  useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
@@ -15,7 +16,11 @@ import { categories, prodcutDetailTabs } from "../../../utils/constant";
 
 import path from "../../../utils/path";
 import { apiGetProduct } from "../../../services/productService";
-import { createSlug, formatMoney } from "../../../utils/helper";
+import {
+  createSlug,
+  formatMoney,
+  renderStartFromNumber,
+} from "../../../utils/helper";
 const { IoChevronBackOutline, IoIosArrowForward, CiStar } = icons;
 const DetailProduct = () => {
   const { category } = useParams();
@@ -24,7 +29,7 @@ const DetailProduct = () => {
   const [activeTab, setActiveTab] = useState(1);
   const location = useLocation();
   const [params] = useSearchParams();
-
+  const navigate = useNavigate();
   const getProduct = async (queries) => {
     const data = [];
     const response = await apiGetProduct(queries);
@@ -47,11 +52,13 @@ const DetailProduct = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2500);
+    }, 1000);
   }, []);
   return (
     <>
-      {loading ? (
+      {!category ? (
+        navigate({ path: `/${path.HOME}` })
+      ) : loading ? (
         <div className="w-full h-[200px] flex items-center justify-center">
           <ClipLoader
             loading={loading}
@@ -63,10 +70,10 @@ const DetailProduct = () => {
         </div>
       ) : (
         <div className="flex w-main">
-          <div className="flex-2 flex rounded-md bg-opacity-90 bg-white m-4 ">
+          <div className="flex-2 flex rounded-md bg-opacity-90 bg-white m-4 h-[541px] overflow-y-auto scrollbar-hide ">
             <SliderCate />
           </div>
-          <div className="flex-8 flex ml-0 m-4">
+          <div className="flex-8 flex ml-0 m-4 h-[541px] overflow-y-auto scrollbar-hide">
             <div className=" w-full flex flex-col gap-2 ">
               <div className="bg-white p-4 flex flex-col gap-8 ">
                 <div className="flex flex-col gap-2">
@@ -139,14 +146,16 @@ const DetailProduct = () => {
                               alt=""
                             />
                           </div>
-                          <div className="px-2 flex flex-col w-full h-[124px]">
-                            <div className="w-full h-[72px]">
+                          <div className="px-2 flex flex-col gap-2 w-full h-[124px]">
+                            <div className="w-full h-[72px] flex flex-col gap-2">
                               <p className="text-xs font-normal w-full h-fit text-gray-800 overflow-hidden overflow-ellipsis line-clamp-3 ">
                                 {el?.title}
                               </p>
                               <div className="flex w-full h-[15px] ">
-                                <span className="">
-                                  <CiStar color="orange" size={12} />
+                                <span className="flex ">
+                                  {renderStartFromNumber(
+                                    Number(Math.random() * 4 + 1)
+                                  )}
                                 </span>
                                 <span className="ml-[4px] pl-[5px] before:absolute before:top-[50%] before:left-0 before:w-[0.5px] before:h-[12px] before:translate-y-[-50%] before:bg-gray-400 relative text-[10px] font-normal text-gray-400">
                                   Đã bán {el?.sold}

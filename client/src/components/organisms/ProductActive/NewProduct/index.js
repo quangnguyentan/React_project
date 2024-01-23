@@ -11,7 +11,7 @@ const TopSeller = () => {
 
   const getProduct = async (queries) => {
     const data = [];
-    const response = await apiGetProduct({ sort: "createdAt" });
+    const response = await apiGetProduct({ sort: "-createdAt" });
     if (response.success) {
       response?.products?.map((product) => {
         if (product?.type === category) data.push(product);

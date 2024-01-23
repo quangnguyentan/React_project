@@ -7,11 +7,17 @@ import {
   apiGetProduct,
   apiGetProductById,
 } from "../../../services/productService";
-import { formatMoney } from "../../../utils/helper";
+import {
+  createSlug,
+  formatMoney,
+  renderStartFromNumber,
+} from "../../../utils/helper";
+import { BreadCrumbs } from "../../organisms/index";
 import ClipLoader from "react-spinners/ClipLoader";
 import { apiUpdateCart } from "../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrent } from "../../../stores/actions/userAction";
+import { categories } from "../../../utils/constant";
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
   const [product, setProduct] = useState(null);
@@ -25,6 +31,7 @@ const ProductCard = () => {
     const response = await apiGetProductById(id);
     if (response?.success) setProduct(response?.productDatas);
   };
+
   const fetchApiProduct = async () => {
     const response = await apiGetProduct({
       // page: Math.floor(Math.random(10) * 10) + 1,
@@ -37,47 +44,38 @@ const ProductCard = () => {
       setProductCate(response?.products);
     }
   };
-  const renderColor = (type) => {
-    const color = [];
 
-    type?.map((variant) => {
-      if (variant?.colorName === "Màu" || variant?.colorName === "Màu sắc") {
-        variant.variants.map((el) => {
-          if (el != null) {
-            color.push(
-              <span
-                // className={({ isActive }) =>
-                //   isActive
-                //     ? "w-[120px] rounded-md active:rounded-md active:border-2 active:border-blue-500 flex h-[52px] items-center justify-center bg-gray-200 border"
-                //     : " w-[120px] rounded-md flex h-[52px] items-center justify-center bg-gray-200 border"
-                // }
-
-                className="w-[143px] rounded-md flex h-[52px] items-center justify-center bg-gray-200 border active:border-blue-500"
-              >
-                {el}
-              </span>
-            );
-          }
-        });
+  const convertCategory = () => {
+    let categoryConvert;
+    categories.map((el) => {
+      if (createSlug(el.categoryName) === category) {
+        categoryConvert = el.categoryName;
       }
     });
-    return color;
+
+    return categoryConvert;
   };
+  const categoryName = convertCategory();
   const { currentData } = useSelector((state) => state.user);
   const handleClickOptions = async (flag) => {
     if (flag === "CART") {
       if (!currentData) throw new Error("Please login first");
-      const initialCartQuantity = currentData?.cart?.quantity ?? 0;
-
-      const updatedQuantity = quantity + initialCartQuantity;
       const response = await apiUpdateCart({
         pid: product?._id,
-        quantity: updatedQuantity,
-        color: product?.color[0],
+        quantity,
+        color: product?.color[0] ? product?.color[0] : "Không có",
       });
-
       if (response?.success) {
         dispatch(getCurrent());
+        const currentQuantity = localStorage.getItem(product?._id);
+
+        if (currentQuantity) {
+          const updatedQuantity = Number(currentQuantity) + quantity;
+          localStorage.setItem(product?._id, JSON.stringify(updatedQuantity));
+        } else {
+          const updatedQuantity = quantity;
+          localStorage.setItem(product?._id, JSON.stringify(updatedQuantity));
+        }
       }
     }
   };
@@ -87,10 +85,9 @@ const ProductCard = () => {
 
     setTimeout(() => {
       setLoading(false);
-    }, 2500);
+    }, 1000);
     window.scrollTo(0, 0);
   }, [category, id, title]);
-  console.log(product);
   // const handleQuantity = (type) => {
   //   if (type === "increase") {
   //     setQuantity(quantity + 1);
@@ -131,6 +128,7 @@ const ProductCard = () => {
         </div>
       ) : (
         <div className="w-main flex flex-col  ">
+          <BreadCrumbs title={product?.title} category={categoryName} />
           <div className="w-full flex">
             <div className="ml-4 w-[70%] flex flex-col gap-4 ">
               <div className="flex gap-2 w-full">
@@ -142,9 +140,9 @@ const ProductCard = () => {
                     />
                   </div>
                   <div className="m-6 w-full flex gap-2">
-                    {product?.images?.map((el) => (
+                    {product?.images?.map((el, index) => (
                       <div
-                        key={el?._id}
+                        key={index}
                         className="w-[53px] h-[53px] border rounded-lg"
                       >
                         <img
@@ -164,8 +162,8 @@ const ProductCard = () => {
                       alt=""
                     />
 
-                    <p className="font-normal text-sm">
-                      Thương hiệu:
+                    <p className="font-normal flex gap-1  text-sm">
+                      <span>Thương hiệu:</span>
                       <Link to={product?.brandLink} className="">
                         <span className="text-blue-700 cursor-pointer">
                           {product?.brand}
@@ -176,11 +174,9 @@ const ProductCard = () => {
                   <div className="px-4 flex flex-col gap-2">
                     <h3 className="font-medium text-xl">{product?.title}</h3>
                     <div className="flex items-center gap-2 text-sm ">
-                      <div className="flex items-center gap-1 ">
-                        <span className="font-medium">4.8</span>
-                        <CiStar color="yellow" />
-                      </div>
-                      <span className="text-gray-400">(30)</span>
+                      <span className="text-gray-400 flex gap-1">
+                        {renderStartFromNumber(Number(5))}
+                      </span>
                       <div className="w-[1px] h-[12px] bg-gray-300 mx-[-1px] mt-[2px]"></div>
                       <span className="text-gray-400">
                         Đã bán {product?.sold}
@@ -191,11 +187,22 @@ const ProductCard = () => {
                       <sup>đ</sup>
                     </div>
                   </div>
-                  <div className="w-[330px] p-4 gap-4 flex flex-col h-[141px]">
-                    <h3 className="font-semibold text-sm">Màu sắc</h3>
-                    <span className="flex  gap-2  flex-wrap  ">
-                      {renderColor(product?.variants)}
-                    </span>
+                  <div className="w-[330px] p-4 gap-4  flex flex-col h-[141px]">
+                    {product?.color?.length > 0 && (
+                      <div className="flex flex-col gap-2">
+                        <h3 className="font-semibold text-sm">Màu sắc</h3>
+                        <span className="flex  gap-2  flex-wrap  ">
+                          {product?.color?.map((el, index) => (
+                            <span
+                              key={index}
+                              className="w-[143px] rounded-md flex h-[52px] items-center justify-center bg-gray-200 border active:border-blue-500"
+                            >
+                              {el}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -234,35 +241,25 @@ const ProductCard = () => {
             </div>
             <div className="w-[28%] flex flex-col m-4 ml-0  gap-2">
               <div className=" bg-white  rounded-xl p-4 flex-col flex gap-4">
-                <div className="flex items-center">
-                  <div className="w-[40px] h-[40px]">
-                    <img
-                      src="https://vcdn.tikicdn.com/cache/w100/ts/seller/81/27/4e/bac5296e1c315488f3e4ba3d61c4581c.jpg.webp"
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <a href="https://tiki.vn/cua-hang/gu-bag-official-store?source_screen=product_detail&source_engine=organic">
+                <div className="flex items-start">
+                  <div className="flex gap-2">
+                    <span>Thương hiệu:</span>
+                    <a href={product?.brandLink}>
                       <span className="font-medium text-base">
-                        Gu Bag Official Store
+                        {product?.brand}
                       </span>
                     </a>
-                    <div className="flex items-center gap-2 text-sm">
-                      <span className="font-medium">4.6</span>
-                      <CiStar fill="black" color="black" />
-                      <span className="font-medium text-gray-400">
-                        (3.0k+ đánh giá)
-                      </span>
-                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <img
                     className="w-[40px] h-[40px]"
-                    src="https://salt.tikicdn.com/cache/280x280/ts/product/d0/1c/e3/cdbf0218b586a07a659b6f63f380a258.jpg.webp"
+                    src={product?.thumb?.[0]?.split(",")[0].split(" ")[0]}
                     alt=""
                   />
-                  <span className="font-normal text-base">Màu ghi</span>
+                  <span className="font-normal text-base">
+                    {product?.color ? product?.color[0] : ""}
+                  </span>
                 </div>
                 <div className="flex flex-col  gap-2">
                   <span className="font-medium">Số lượng</span>
@@ -326,7 +323,7 @@ const ProductCard = () => {
               <h3 className="font-medium">Sản phẩm tương tự</h3>
               <div className="flex gap-2">
                 {productCate?.map((el) => (
-                  <div className="flex gap-2">
+                  <div className="flex gap-2" key={el?._id}>
                     <NavLink to={`/${el?.type}/${el?._id}/${el?.slug}`}>
                       <div className="w-[142px]  hover:rounded-lg h-[240px] hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
                         <img
@@ -335,13 +332,13 @@ const ProductCard = () => {
                           alt="home_product"
                         />
                         <div className="px-2 flex flex-col w-full h-[80px]">
-                          <p className="text-xs font-light h-[36px] text-gray-800 overflow-hidden break-words whitespace-break-spaces ">
+                          <p className="text-xs  font-light h-[36px] text-gray-800 overflow-hidden justify-center flex pl-2 ">
                             {el?.title}
                           </p>
-                          <span className="">
-                            <CiStar color="yellow" size={12} />
+                          <span className="flex gap-1 items-center justify-center">
+                            {renderStartFromNumber(Number(5), 12)}
                           </span>
-                          <div className="flex">
+                          <div className="flex  justify-center">
                             <div className="font-medium">
                               {formatMoney(product?.prices)}
                             </div>

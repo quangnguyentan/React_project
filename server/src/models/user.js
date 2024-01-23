@@ -29,6 +29,7 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      enum: ["user", "admin"],
       default: "user",
     },
 
@@ -37,6 +38,7 @@ const UserSchema = new mongoose.Schema(
         product: { type: mongoose.Types.ObjectId, ref: "Product" },
         quantity: Number,
         color: String,
+        // prices: Number,
       },
     ],
     address: String,

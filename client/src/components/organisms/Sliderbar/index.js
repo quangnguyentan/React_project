@@ -13,6 +13,7 @@ const Slidebar = () => {
           <NavLink
             key={el.id}
             to={createSlug(el.categoryName)}
+            categoryName={el.categoryName}
             className="flex gap-2 items-center "
           >
             <img
