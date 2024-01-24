@@ -341,3 +341,38 @@ console.log(d.getDate() + 2, d.getMonth() + 1);
 console.log(d.getDay() + 3);
 
 // console.log(d.getFullYear());
+
+function compareArrays(a, b) {
+  // Tạo một mảng để lưu trữ các chỉ số của phần tử trùng nhau
+  const indexes = [];
+
+  // Duyệt mảng a
+  for (let i = 0; i < a.length; i++) {
+    // Nếu phần tử a[i] trùng với một phần tử trong mảng b
+    if (b.includes(a[i])) {
+      // Kiểm tra xem phần tử a[i] đã được thêm vào mảng indexes chưa
+      if (!indexes.includes(i)) {
+        // Thêm phần tử a[i] vào mảng indexes
+        indexes.push(i);
+      } else {
+        // Trả về null
+        return null;
+      }
+    }
+  }
+
+  // Nếu không tìm thấy phần tử nào trùng nhau
+  if (indexes.length === 0) {
+    return null;
+  }
+
+  // Trả về mảng indexes
+  return indexes;
+}
+
+const numbers = [100, 200, 400, 500, 300, 600];
+const numbers1 = [100, 200, 300, 400, 500, 300, 100, 200, 300, 500];
+
+const result = compareArrays(numbers, numbers1);
+
+console.log(result); // [0]

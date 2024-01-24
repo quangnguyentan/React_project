@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import clsx from "clsx";
-const InputForm = ({
+const Select = ({
   label,
   disabled,
   register,
@@ -12,19 +12,22 @@ const InputForm = ({
   fullWith,
   defaultValue,
   style,
+  options = [],
 }) => {
   return (
     <div className={clsx("flex flex-col h-[78px] gap-2", style)}>
       {label && <label htmlFor={id}>{label}</label>}
-      <input
-        type={type}
+      <select
         id={id}
         {...register(id, vallidate)}
-        disabled={disabled}
-        placeholder={placeholder}
         className={clsx("form-input my-auto", fullWith && "w-full", style)}
         defaultValue={defaultValue}
-      />
+      >
+        <option value="">----Chọn-----</option>
+        {options?.map((el) => (
+          <option value={el.code}>{el.value}</option>
+        ))}
+      </select>
       {errors[id] && (
         <small className="text-xs text-red-500">{errors[id]?.message}</small>
       )}
@@ -32,4 +35,4 @@ const InputForm = ({
   );
 };
 
-export default memo(InputForm);
+export default memo(Select);

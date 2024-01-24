@@ -57,3 +57,31 @@ export const renderStartFromNumber = (number, size) => {
 
   return stars;
 };
+
+export const compareArrays = (a, b) => {
+  // Tạo một mảng để lưu trữ các chỉ số của phần tử trùng nhau
+  const indexes = [];
+
+  // Duyệt mảng a
+  for (let i = 0; i < a.length; i++) {
+    // Nếu phần tử a[i] trùng với một phần tử trong mảng b
+    if (b.includes(a[i])) {
+      // Kiểm tra xem phần tử a[i] đã được thêm vào mảng indexes chưa
+      if (!indexes.includes(i)) {
+        // Thêm phần tử a[i] vào mảng indexes
+        indexes.push(i);
+      } else {
+        // Trả về null
+        return null;
+      }
+    }
+  }
+
+  // Nếu không tìm thấy phần tử nào trùng nhau
+  if (indexes.length === 0) {
+    return null;
+  }
+
+  // Trả về mảng indexes
+  return indexes;
+};

@@ -7,6 +7,7 @@ import actionType from "./actionType";
 export const apiGetProductAction = () => async (dispatch) => {
   try {
     const response = await apiGetProduct();
+    console.log(response?.products);
     if (response?.success) {
       dispatch({
         type: actionType.GET_PRODUCT,
