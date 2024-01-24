@@ -4,6 +4,7 @@ import Banner from "../../organisms/banner";
 import { useLocation } from "react-router-dom";
 import path from "../../../utils/path";
 import Product from "../../organisms/Products";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const location = useLocation();

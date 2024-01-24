@@ -1,27 +1,40 @@
 import React, { useEffect, useState } from "react";
 import icons from "../../../utils/icons";
 import { Button } from "../../atoms";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import path from "../../../utils/path";
+
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../stores/actions/cartAction";
 import { apiGetProductById } from "../../../services/productService";
 import { formatMoney, totalPrice } from "../../../utils/helper";
 import { Bounce, toast } from "react-toastify";
 
+import { BreadCrumbs } from "../../organisms/index";
+import ClipLoader from "react-spinners/ClipLoader";
+
+import { getCurrent } from "../../../stores/actions/userAction";
+import { categories } from "../../../utils/constant";
+
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
-  const dispatch = useDispatch();
   // get item từ redux
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [product, setProduct] = useState(null);
+
   const [quantity, setQuantity] = useState(1);
-  // get params
+
+  const [productCate, setProductCate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
   const { category, id, title } = useParams();
   const getProductById = async (id) => {
     const response = await apiGetProductById(id);
     if (response?.success) setProduct(response?.productDatas);
   };
+
   useEffect(() => {
     getProductById(id);
   }, []);
@@ -72,6 +85,33 @@ const ProductCard = () => {
       setQuantity(quantity - 1);
     }
   };
+  useEffect(() => {
+    setLoading(true);
+    getProductById(id);
+    // && fetchApiProduct();
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    window.scrollTo(0, 0);
+  }, [category, id, title]);
+  // const handleQuantity = (type) => {
+  //   if (type === "increase") {
+  //     setQuantity(quantity + 1);
+  //   } else {
+  //     if (quantity === 1) {
+  //       return;
+  //     } else {
+  //       setQuantity(quantity - 1);
+  //     }
+  //   }
+  // };
+  // const updatedPrice = price.reduce((total, currentValue, index, arr) => {
+  //   const x = total * currentValue;
+  //   setPrice(x);
+  //   return x;
+  // }, quantity);
+  // console.log(updatedPrice);
   return (
     <>
       <div className="w-main flex flex-col" key={product?._id}>
@@ -134,6 +174,7 @@ const ProductCard = () => {
                 </div>
               </div>
             </div>
+
             <div className="w-[96%] m-4 bg-white rounded-lg">
               <div className="p-4">
                 <h3>Khách hàng đánh giá</h3>

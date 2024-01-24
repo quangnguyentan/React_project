@@ -7,7 +7,9 @@ const MyOrder = () => {
   const [orderDetails, setOrderDetails] = useState(null);
 
   const findQuantityByProductId = (productId) => {
-    const cartItem = currentData.find((item) => item.product === productId);
+    const cartItem = currentData.find(
+      (item) => item.product?._id === productId
+    );
     return cartItem ? cartItem.quantity : 0;
   };
 
@@ -16,7 +18,7 @@ const MyOrder = () => {
     const fetchProductDetails = async () => {
       const details = await Promise.all(
         currentData?.map(async (cartItem) => {
-          const response = await apiGetProductById(cartItem.product);
+          const response = await apiGetProductById(cartItem.product._id);
           return response.productDatas; // Giả sử API trả về dữ liệu sản phẩm ở thuộc tính "data"
         })
       );

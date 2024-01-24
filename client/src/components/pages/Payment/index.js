@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import path from "../../../utils/path";
-import { Footer } from "../../organisms";
+import { Footer, PayPal } from "../../organisms";
 import logo from "../../../assets/images/logo.png";
 import contact from "../../../assets/images/contact.png";
 import icons from "../../../utils/icons";
@@ -18,59 +18,62 @@ import { formatMoney, totalPrice } from "../../../utils/helper";
 import { postDataCart } from "../../../services/userService";
 import { apiGetProductById } from "../../../services/productService";
 import { removeAllCart } from "../../../stores/actions/cartAction";
+
 const { GiShop } = icons;
 const Payment = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productId = queryParams.get("productId");
   const quantity = queryParams.get("quantity");
-  // const getProductById = async (productId) => {
-  //   const response = await apiGetProductById(productId);
-  //   if (response?.success) setProduct(response?.productDatas);
-  // };
-  // useEffect(() => {
-  //   getProductById(productId);
-  // }, []);
   const [product, setProduct] = useState(null);
-
+  const [checkproductId, setCheckproductId] = useState(false);
   const { cartItems, totalCart } = cart;
   const { price } = cartItems;
-
   const { currentData } = useSelector((state) => state.user);
   const placeOderKey = true;
-  const handlePlaceOrder = async() =>{
+  const getProductById = async (productId) => {
+    const response = await apiGetProductById(productId);
+    if (response?.success) setProduct(response?.productDatas);
+    setCheckproductId(true);
+  };
+  useEffect(() => {
+    if (productId) {
+      getProductById(productId);
+    }
+  }, []);
+  const handlePlaceOrder = async () => {
     try {
-      const cartData = cartItems.map(product =>({
-        product:product.id,
-        quantity: product.quantities,
-        color: "black",
-      
+      let cartData;
+      if (productId) {
+        // Nếu có productId, tạo dữ liệu đơn hàng từ sản phẩm đó
+        cartData = [
+          {
+            product: productId,
+            quantity: quantity,
+            color: "black",
+          },
+        ];
+      } else {
+        // Nếu không có productId, tạo dữ liệu đơn hàng từ các sản phẩm trong cartItems
+        cartData = cartItems.map((product) => ({
+          product: product.id,
+          quantity: product.quantities,
+          color: "black",
+        }));
+      }
 
-      }))
-      const response = await postDataCart(currentData?.id,cartData);
-      console.log('Data sent to server:', { cart: cartData });
-      console.log("Order placed successfully:", response);
-      dispatch(removeAllCart())
-      dispatch(totalCart(0))
+      const response = await postDataCart(currentData?.id, cartData);
+      dispatch(removeAllCart());
     } catch (error) {
       console.error("Error placing order:", error);
     }
-  }
+  };
   return (
     <>
-      <div className="w-full bg-white h-[100px] flex items-center px-3 ">
-        <div className="  flex items-center gap-4 flex-1 ">
-          <Link to={`/`}>
-            <img src={logo} className="w-[72px] h-[72px]" alt="" />
-          </Link>
-          <span className="w-[1px] h-[32px] bg-blue-400"></span>
-          <h3 className="font-normal text-2xl text-blue-400">Thanh toán</h3>
-        </div>
-        <div className="flex-1 flex justify-end">
-          <img src={contact} className=" w-[185px] h-[56px]" alt="" />
-        </div>
+      <div className="flex-1 flex justify-end">
+        <img src={contact} className=" w-[185px] h-[56px]" alt="" />
       </div>
       <div className="flex w-full">
         <div className="w-[70%] mx-4 mt-8 mb-4 flex flex-col gap-4">
@@ -246,16 +249,16 @@ const Payment = () => {
                 </span>
               </div>
             </div>
-           <Link to={`/${path.HOME}`}>
-           <div className=" w-full h-[60px] ">
-              <Button
-                name="Đặt hàng"
-                fw
-                placeOderKey={placeOderKey}
-                handlePlaceOrder={handlePlaceOrder}
-              />
-            </div>
-           </Link>
+            <Link to={`/${path.HOME}`}>
+              <div className=" w-full h-[60px] ">
+                <Button
+                  name="Đặt hàng"
+                  fw
+                  placeOderKey={placeOderKey}
+                  handlePlaceOrder={handlePlaceOrder}
+                />
+              </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -277,9 +280,28 @@ const Payment = () => {
             <span>Chính sách bảo mật thông tin cá nhân</span>
           </div>
         </div>
+        <div className="bg-gray-200 text-xs mt-12 p-4 flex flex-col items-start justify-start w-full gap-4 text-gray-500">
+          <div className="flex flex-col gap-1">
+            <span>
+              Bằng việc tiến hành Đặt Mua, bạn đồng ý với các Điều kiện Giao
+              dịch chung:
+            </span>
+            <div className="flex gap-4 items-center text-black">
+              <span>Quy chế hoạt động</span>
+              <span className="w-[1px] h-[15px] bg-gray-300"></span>
+              <span>Chính sách giải quyết khiếu nại</span>
+              <span className="w-[1px] h-[15px] bg-gray-300"></span>
+              <span>Chính sách bảo hành</span>
+              <span className="w-[1px] h-[15px] bg-gray-300"></span>
+              <span>Chính sách bảo mật thanh toán</span>
+              <span className="w-[1px] h-[15px] bg-gray-300"></span>
+              <span>Chính sách bảo mật thông tin cá nhân</span>
+            </div>
+          </div>
 
-        <div>
-          <span>© 2019 - Bản quyền của Công Ty Cổ Phần Ti Ki - Tiki.vn</span>
+          <div>
+            <span>© 2019 - Bản quyền của Công Ty Cổ Phần Ti Ki - Tiki.vn</span>
+          </div>
         </div>
       </div>
     </>

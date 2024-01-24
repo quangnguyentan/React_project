@@ -189,14 +189,14 @@ const categories = [
 ];
 // console.log(typeof createSlug(categories[0].categoryName));
 
-const formatMoney = (number) => {
-  let formattedString = number?.toFixed(2)?.replace(".", "").split(" ")[0];
-  console.log(formattedString);
-  formattedString = formattedString?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  console.log(typeof number);
-  return formattedString;
-};
-console.log(formatMoney(2410332));
+// const formatMoney = (number) => {
+//   let formattedString = number?.toFixed(2)?.replace(".", "").split(" ")[0];
+//   console.log(formattedString);
+//   formattedString = formattedString?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+//   console.log(typeof number);
+//   return formattedString;
+// };
+// console.log(formatMoney(2410332));
 
 // const createSlugCategories = (name) => {
 //   const array = [];
@@ -216,3 +216,163 @@ console.log(formatMoney(2410332));
 
 // const sliceThumb = thumb[0];
 // console.log(sliceThumb.split(",")[0].split(" ")[0]);
+
+const variants = [
+  { colorName: "Màu", variants: ["Xanh Rêu", null] },
+  {
+    colorName: "Màu sắc",
+    variants: [
+      "Black",
+      null,
+      "Black for KIDS",
+      null,
+      "Blue Grey",
+      null,
+      "Blue Sky",
+      null,
+      "Coffee",
+      null,
+      "Denim",
+      null,
+      "Emerald Forest Kids",
+      null,
+      "Merlot",
+      null,
+      "Olive",
+      null,
+      "Yellow Kids",
+      null,
+    ],
+  },
+  {
+    colorName: "dung lượng",
+    variants: [
+      "16GB",
+      null,
+      "16GB HỎA TỐC 2H",
+      null,
+      "32GB",
+      null,
+      "8GB - HỎA TỐC 2H",
+      null,
+      "8gb",
+      null,
+    ],
+  },
+  {
+    colorName: "Màu sắc",
+    variants: [
+      "Be(Beige 02)",
+      null,
+      "Be(Beige 57)",
+      null,
+      "Bạc(Silver 624)",
+      null,
+      "Khaki 26",
+      null,
+      "Khaki 263",
+      null,
+      "Khaki Apricot 30",
+      null,
+      "Khaki Đậm 506",
+      null,
+      "Khaki Đậm(Deep Khaki 25)",
+      null,
+      "Nâu Nhạt(Light Brown 09)",
+      null,
+      "Nâu Đậm(Dark Brown 06)",
+      null,
+      "Nâu Đỏ(Reddish Brown 08)",
+      null,
+      "Nâu(Brown 05)",
+      null,
+      "Trắng Be(Beige White 04)",
+      null,
+      "Trắng Ngà(Off White 03)",
+      null,
+      "Trắng(White 01)",
+      null,
+      "Vàng Chanh(Lemon Yellow 95)",
+      null,
+      "Vàng Ròng(Golden 655)",
+      null,
+      "Vàng(Yellow 07)",
+      null,
+      "Đen(Black 18)",
+      null,
+      "Đỏ Cam(Orange Red 28)",
+      null,
+      "Đỏ Hoa Cà(Mauve 186)",
+      null,
+      "Đỏ Hồng(Rose Red 93)",
+      null,
+      "Đỏ Máu(Oxblood Red 89)",
+      null,
+      "Đỏ Rượu Vang(Bordeaux Red 108)",
+      null,
+      "Đỏ Rượu(Claret 11)",
+      null,
+      "Đỏ Táo(Jujube Red 22)",
+      null,
+      "Đỏ(Red 102)",
+      null,
+    ],
+  },
+];
+
+const type = (type) => {
+  const color = [];
+
+  type?.map((variant) => {
+    if (variant?.colorName === "Màu" || variant?.colorName === "Màu sắc") {
+      variant.variants.map((el) => {
+        if (el != null) color.push(el);
+      });
+    }
+  });
+  return color;
+};
+// console.log(type(variants));
+
+// console.log(Math.floor(Math.random(10) * 10) + 1);
+
+var d = new Date();
+console.log(d.getDate() + 2, d.getMonth() + 1);
+console.log(d.getDay() + 3);
+
+// console.log(d.getFullYear());
+
+function compareArrays(a, b) {
+  // Tạo một mảng để lưu trữ các chỉ số của phần tử trùng nhau
+  const indexes = [];
+
+  // Duyệt mảng a
+  for (let i = 0; i < a.length; i++) {
+    // Nếu phần tử a[i] trùng với một phần tử trong mảng b
+    if (b.includes(a[i])) {
+      // Kiểm tra xem phần tử a[i] đã được thêm vào mảng indexes chưa
+      if (!indexes.includes(i)) {
+        // Thêm phần tử a[i] vào mảng indexes
+        indexes.push(i);
+      } else {
+        // Trả về null
+        return null;
+      }
+    }
+  }
+
+  // Nếu không tìm thấy phần tử nào trùng nhau
+  if (indexes.length === 0) {
+    return null;
+  }
+
+  // Trả về mảng indexes
+  return indexes;
+}
+
+const numbers = [100, 200, 400, 500, 300, 600];
+const numbers1 = [100, 200, 300, 400, 500, 300, 100, 200, 300, 500];
+
+const result = compareArrays(numbers, numbers1);
+
+console.log(result); // [0]

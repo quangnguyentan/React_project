@@ -25,3 +25,16 @@ export const apiGetProductById = (id) =>
       console.log("Failed to get product", error);
     }
   });
+export const apiCreateProduct = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: "/product/",
+        data,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get product", error);
+    }
+  });

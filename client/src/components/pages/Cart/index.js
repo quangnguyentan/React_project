@@ -1,21 +1,40 @@
-import React from "react";
-import { Button } from "../../atoms";
-import { Link, Navigate } from "react-router-dom";
-import path from "../../../utils/path";
-import icons from "../../../utils/icons";
-import ItemProductCart from "./ItemProductCart";
-import { productList } from "../../../utils/datatest";
-import PriceProductCart from "./PriceProductCart";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { apiGetProduct } from "../../../services/productService";
 import { removeAllCart } from "../../../stores/actions/cartAction";
+import { productList } from "../../../utils/datatest";
+import { formatMoney, renderStartFromNumber } from "../../../utils/helper";
+import icons from "../../../utils/icons";
 import Modal from "../../atoms/Modal";
-const { CiStar, RiDeleteBin6Line } = icons;
+import ItemProductCart from "./ItemProductCart";
+import PriceProductCart from "./PriceProductCart";
 const Cart = () => {
-  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
   const handleRemoveCartAll = () => {
     dispatch(removeAllCart());
   };
+
+  const { CiStar, RiDeleteBin6Line, CiDeliveryTruck, GoPlus, FiMinus } = icons;
+
+  const dispatch = useDispatch();
+  const day = new Date();
+
+  const { currentData } = useSelector((state) => state.user);
+  const [products, setProducts] = useState(null);
+
+  const getApiProduct = async () => {
+    const response = await apiGetProduct({
+      limit: 5,
+      page: 3,
+    });
+    if (response?.success) setProducts(response?.products);
+  };
+
+  useEffect(() => {
+    getApiProduct();
+  }, []);
+
   return (
     <div className="w-main flex flex-col  ">
       <div className="w-full flex">
@@ -30,7 +49,7 @@ const Cart = () => {
                     <div className="flex gap-2 w-[324px] ">
                       <input type="checkbox" />
                       <span>Tất cả </span>
-                      <span>(2 sản phẩm)</span>
+                      <span>{cartItems.length} Sản phẩm</span>
                     </div>
                     <span>Đơn giá</span>
                     <span>Số lượng</span>
@@ -68,53 +87,33 @@ const Cart = () => {
               <div className="bg-white w-full p-4 rounded-xl flex flex-col gap-4 ">
                 <h3 className="font-medium">Sản phẩm mua kèm</h3>
                 <div className="flex gap-2">
-                  <div className="flex gap-2">
-                    <Link to={`/${path.PRODUCT_INFO}`}>
-                      <div className="w-[142px]  hover:rounded-lg h-[240px] hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
-                        <img
-                          className="rounded-t-lg w-full h-[148px]"
-                          src="https://salt.tikicdn.com/cache/280x280/ts/product/5d/d0/f6/a00d7cdc0d8c56556263458b87f94e81.jpg.webp"
-                          alt="home_product"
-                        />
-                        <div className="px-2 flex flex-col w-full h-[80px]">
-                          <p className="text-xs font-light h-[36px] text-gray-800 overflow-hidden break-words whitespace-break-spaces ">
-                            Ba lô nam thời trang cao cấp phong cách mới 15,6
-                            acasdsdadsadasddadas
-                          </p>
-                          <span className="">
-                            <CiStar color="yellow" size={12} />
-                          </span>
-                          <div className="flex">
-                            <div className="font-medium">441.000</div>
-                            <sup className="top-[0.5em]">đ</sup>
+                  {products?.map((el) => (
+                    <div key={el?._id} className="flex gap-2">
+                      <Link to={`/${el?.type}/${el?._id}/${el?.slug}`}>
+                        <div className="w-[142px]  hover:rounded-lg h-[240px] hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
+                          <img
+                            className="rounded-t-lg w-full h-[148px]"
+                            src={el?.thumb?.[0]?.split(",")[0].split(" ")[0]}
+                            alt=""
+                          />
+                          <div className="px-2 flex flex-col w-full h-[80px]">
+                            <p className="text-xs font-light h-[36px] text-gray-800 overflow-hidden break-words whitespace-break-spaces ">
+                              {el?.title}
+                            </p>
+                            <span className="flex gap-1">
+                              {renderStartFromNumber(Number(5))}
+                            </span>
+                            <div className="flex">
+                              <div className="font-medium">
+                                {formatMoney(el?.prices)}
+                              </div>
+                              <sup className="top-[0.5em]">đ</sup>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="flex gap-2">
-                    <Link to={`/${path.PRODUCT_INFO}`}>
-                      <div className="w-[142px]  hover:rounded-lg h-[240px] hover:bg-gray-100 cursor-pointer flex flex-col gap-2">
-                        <img
-                          className="rounded-t-lg w-full h-[148px]"
-                          src="https://salt.tikicdn.com/cache/280x280/ts/product/5d/d0/f6/a00d7cdc0d8c56556263458b87f94e81.jpg.webp"
-                          alt="home_product"
-                        />
-                        <div className="px-2 flex flex-col w-full h-[80px]">
-                          <p className="text-xs font-light h-[36px] text-gray-800 overflow-hidden break-words whitespace-break-spaces ">
-                            Ba lô nam thời trang cao cấp phong cách mới 15,6
-                          </p>
-                          <span className="">
-                            <CiStar color="yellow" size={12} />
-                          </span>
-                          <div className="flex">
-                            <div className="font-medium">441.000</div>
-                            <sup className="top-[0.5em]">đ</sup>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

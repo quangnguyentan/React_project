@@ -17,12 +17,17 @@ const Header = () => {
           />
         </Link>
         <div className="flex  pitems-center w-[749px] h-[40px] my-[10px] border border-gray-200 rounded-lg placeholder:text-gray-500 justify-between">
-          <div className="flex py-2 gap-2">
+          <div className="flex py-2 gap-2 ">
             <IoIosSearch size={24} className="text-gray-500 ml-[18px]" />
-            <Input
+            <input
+              type="text"
+              className="w-[600px] h-[21px] outline-none border-none px-4 placeholder:border-none placeholder:outline-none"
+              placeholder="Bạn tìm gì hôm nay"
+            />
+            {/* <Input
               style={"w-[618px] h-[21px] outline-none"}
               nameKey={"Bạn tìm gì hôm nay"}
-            />
+            /> */}
             {/* <input
               type="text"
               placeholder="Bạn tìm gì hôm nay"

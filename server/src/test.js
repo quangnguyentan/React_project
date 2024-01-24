@@ -1,3 +1,3 @@
-const createSlugCategories = require("./utils/helper");
+// const createSlugCategories = require("./utils/helper");
 
-createSlugCategories.createSlugCategories;
+// createSlugCategories.createSlugCategories;

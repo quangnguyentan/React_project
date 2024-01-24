@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apigetCurrent } from "../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
-import { customerTabs } from "../../../utils/constant";
+import { customerTabs, customerTabsAdmin } from "../../../utils/constant";
 import avatar from "../../../assets/images/avatar.png";
 import Spinner from "react-bootstrap/Spinner";
 import { getCurrent } from "../../../stores/actions/userAction";
@@ -9,8 +9,9 @@ import { Link, NavLink } from "react-router-dom";
 const Navbar = () => {
   const [activedTab, setActivedTab] = useState(1);
   const dispatch = useDispatch();
-  const { token, isLoggedIn } = useSelector((state) => state.auth);
+  const { token, isLoggedIn, current } = useSelector((state) => state.auth);
   const { currentData } = useSelector((state) => state.user);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -51,26 +52,79 @@ const Navbar = () => {
           <span className="font-medium text-lg">Đang tải...</span>
         </div>
       )}
+      {current === "admin"
+        ? customerTabsAdmin.map((el) => (
+            <>
+              <NavLink to={el.path} key={el.id}>
+                <div
+                  onClick={() => el.id === 1 && setActivedTab(el.id)}
+                  className={`flex px-2 py-2 items-center gap-2 ${
+                    activedTab === +el.id
+                      ? "bg-gray-300 border-b-0 "
+                      : " text-gray-800"
+                  }`}
+                >
+                  {el.icon}
+                  <span className="">{el.value}</span>
+                </div>
+              </NavLink>
+              <span className="flex w-ful justify-end px-4">
+                {el?.productChildren ? (
+                  <div>
+                    {el?.productChildren?.map((els) => (
+                      <NavLink to={els?.path}>
+                        <div
+                          onClick={() => setActivedTab(els.id)}
+                          className={`flex px-2 py-2 items-center gap-4 ${
+                            activedTab === +els.id
+                              ? "bg-gray-300 border-b-0 "
+                              : " text-gray-800"
+                          }`}
+                        >
+                          {els.value}
+                        </div>
+                      </NavLink>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col w-ful justify-end px-4">
+                    <span className="">
+                      {el?.userChildren?.map((els) => (
+                        <NavLink to={els?.path}>
+                          <div
+                            onClick={() => setActivedTab(els.id)}
+                            className={`flex px-2 py-2 items-center gap-4 ${
+                              activedTab === +els.id
+                                ? "bg-gray-300 border-b-0 "
+                                : " text-gray-800"
+                            }`}
+                          >
+                            {els.value}
+                          </div>
+                        </NavLink>
+                      ))}
+                    </span>
+                  </div>
+                )}
+              </span>
+            </>
+          ))
+        : customerTabs.map((el) => (
+            <NavLink to={el.id === 3 ? `/sales/${el.path}` : ""} key={el.id}>
+              <div
+                onClick={() => setActivedTab(el.id)}
+                className={`flex px-2 py-2 items-center gap-4 ${
+                  activedTab === +el.id
+                    ? "bg-gray-300 border-b-0 "
+                    : " text-gray-800"
+                }`}
+              >
+                {el.icon}
 
-      {customerTabs.map((el) => (
-        <NavLink
-          to={el.id === 3 ? `/sales/${el.path}` : `/customer/${el.path}`}
-          key={el.id}
-        >
-          <div
-            onClick={() => setActivedTab(el.id)}
-            className={`flex px-2 py-2 items-center gap-4 ${
-              activedTab === +el.id
-                ? "bg-gray-300 border-b-0 "
-                : " text-gray-800"
-            }`}
-          >
-            {el.icon}
-
-            <span>{el.value}</span>
-          </div>
-        </NavLink>
-      ))}
+                <span>{el.value}</span>
+              </div>
+            </NavLink>
+          ))}
     </div>
   );
 };

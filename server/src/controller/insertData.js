@@ -7,6 +7,18 @@ const {
   categories,
   createSlug,
 } = require("../utils/helper");
+const fakeColor = (type) => {
+  const color = [];
+  type?.variants?.map((variant) => {
+    if (variant?.colorName === "Màu" || variant?.colorName === "Màu sắc") {
+      variant.variants.map((el) => {
+        if (el != null) color.push(el);
+      });
+    }
+  });
+  return color;
+};
+
 const fn = async (product) => {
   await Product.create({
     title: product?.title,
@@ -20,8 +32,8 @@ const fn = async (product) => {
     variants: product?.variants,
     thumb: product?.thumb,
     totalRatings: 0,
+    color: fakeColor(product),
     category: createSlug(categories[24].categoryName),
-
     type: createSlugCategories(categories[24].categoryName)[0],
   });
 };

@@ -13,12 +13,12 @@ import playstore from "../../../assets/images/playstore.png";
 import appstore from "../../../assets/images/appstore.png";
 
 import { Link } from "react-router-dom";
-const Footer = () => {
+const Footer = ({ hidden }) => {
   const newTab = () => {
     window.open("https://www.tikinow.vn/?src=footer", "_blank");
   };
   return (
-    <div className="gap-12 py-4  bg-white flex w-full">
+    <div className={hidden ? "hidden" : " gap-12 py-4  bg-white flex w-full"}>
       <div className="flex px-4  flex-col flex-1 items-start justify-start gap-4">
         <h3 className="text-base font-medium">Hỗ trợ khách hàng</h3>
         <div className="flex flex-col text-xs gap-2 text-gray-600">

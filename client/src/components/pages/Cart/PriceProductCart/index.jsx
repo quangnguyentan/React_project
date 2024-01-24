@@ -47,23 +47,9 @@ export default function PriceProductCart() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <img
-                className="w-[40px] h-[40px]"
-                src="https://salt.tikicdn.com/cache/280x280/ts/product/d0/1c/e3/cdbf0218b586a07a659b6f63f380a258.jpg.webp"
-                alt=""
-              />
-              <span className="font-normal text-base">Màu ghi</span>
-            </div>
+            <div className="flex items-center gap-2"></div>
           </div>
           <div className="bg-white  rounded-xl p-4 flex-col flex gap-4">
-            <div className="flex justify-between text-gray-400">
-              <span className="">Tạm tính</span>
-              <div className="flex  text-black">
-                224.100 <sub>₫</sub>
-              </div>
-            </div>
-
             <div className="flex justify-between text-gray-400">
               <span>Tổng tiền</span>
               <div className="flex flex-col ">
@@ -80,7 +66,7 @@ export default function PriceProductCart() {
           <Link to={`/${path.CHECKOUT}${path.PAYMENT}`}>
             <div className="flex flex-col gap-2">
               <Button
-                name="Mua ngay (1)"
+                name="Mua ngay "
                 fw
                 totalCartKey={totalCartKey}
                 handleTotalCart={() => handleTotalCart(cartItems)}

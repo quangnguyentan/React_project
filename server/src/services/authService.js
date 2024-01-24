@@ -123,6 +123,7 @@ export const loginSuccessService = (id, tokenLogin) =>
         id,
         tokenLogin,
       }).select("-cart -wishList");
+      console.log(response);
       const token =
         response &&
         jwt.sign(
@@ -139,6 +140,7 @@ export const loginSuccessService = (id, tokenLogin) =>
         err: token ? 0 : 3,
         msg: token ? "OK" : "User not found",
         token,
+        role: response.role,
       });
       if (response) {
         console.log(response);
