@@ -11,7 +11,8 @@ import Modal from "../../../atoms/Modal";
 const { RiDeleteBin6Line, GoPlus, FiMinus } = icons;
 function ItemProductCart(props) {
   const cartItems = useSelector((state) => state.cart.cartItems);
-
+  const [selected, setSelected] = useState({})
+  const [totalPriceShow, settotalPriceShow] = useState(0)
   const dispatch = useDispatch();
   const updateQuantity = (productId, newQuantity) => {
     // Dispatch the updateQuantityAction to update the quantity in the Redux store
@@ -44,7 +45,13 @@ function ItemProductCart(props) {
           <div className="bg-white w-full p-4 rounded-xl">
             <div className="flex justify-between items-center ">
               <div className=" w-[324px] gap-2 flex ">
-                <input type="checkbox" />
+                <input type="checkbox" 
+                  
+     
+
+              // Tính tổng giá tiền cần hiển thị dựa trên các sản phẩm được chọn
+              
+                />
                 <div className="w-[80px] h-[80px]">
                   <img src={product.img} alt="" />
                 </div>
@@ -66,7 +73,9 @@ function ItemProductCart(props) {
                 </div>
               </div>
               <div className="flex text-black font-bold">
-                {formatMoney(product?.price)}
+              {
+            formatMoney(product?.price)}
+            
                 <sub>₫</sub>
               </div>
               <div>

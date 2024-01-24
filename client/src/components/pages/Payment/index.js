@@ -13,24 +13,26 @@ import {
   zalo_pay,
 } from "../../atoms/images";
 import { Button } from "../../atoms";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatMoney, totalPrice } from "../../../utils/helper";
 import { postDataCart } from "../../../services/userService";
 import { apiGetProductById } from "../../../services/productService";
+import { removeAllCart } from "../../../stores/actions/cartAction";
 const { GiShop } = icons;
 const Payment = () => {
+  const dispatch = useDispatch()
   const cart = useSelector((state) => state.cart);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const productId = queryParams.get("productId");
   const quantity = queryParams.get("quantity");
-  const getProductById = async (productId) => {
-    const response = await apiGetProductById(productId);
-    if (response?.success) setProduct(response?.productDatas);
-  };
-  useEffect(() => {
-    getProductById(productId);
-  }, []);
+  // const getProductById = async (productId) => {
+  //   const response = await apiGetProductById(productId);
+  //   if (response?.success) setProduct(response?.productDatas);
+  // };
+  // useEffect(() => {
+  //   getProductById(productId);
+  // }, []);
   const [product, setProduct] = useState(null);
 
   const { cartItems, totalCart } = cart;
@@ -38,28 +40,24 @@ const Payment = () => {
 
   const { currentData } = useSelector((state) => state.user);
   const placeOderKey = true;
-  // const handlePlaceOrder = async () => {
-  //   console.log(123);
-  //   try {
-  //     // Tạo dữ liệu giỏ hàng để gửi lên server
-  //     const cartData = cartItems.map((product) => ({
-  //       product: product._id, // Thay thế "_id" bằng trường ID của sản phẩm trong schema của bạn
-  //       quantity: product.quantities,
-  //       color: "black",
-  //     }));
+  const handlePlaceOrder = async() =>{
+    try {
+      const cartData = cartItems.map(product =>({
+        product:product.id,
+        quantity: product.quantities,
+        color: "black",
+      
 
-  //     // Gửi dữ liệu giỏ hàng lên server
-  //     const response = await postDataCart({ cart: cartData });
-
-  //     // Xử lý response từ server (nếu cần)
-  //     console.log("Order placed successfully:", response);
-
-  //     // Có thể thêm các bước xử lý sau khi đặt hàng thành công ở đây
-  //   } catch (error) {
-  //     // Xử lý lỗi (nếu có)
-  //     console.error("Error placing order:", error);
-  //   }
-  // };
+      }))
+      const response = await postDataCart(currentData?.id,cartData);
+      console.log('Data sent to server:', { cart: cartData });
+      console.log("Order placed successfully:", response);
+      dispatch(removeAllCart())
+      dispatch(totalCart(0))
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  }
   return (
     <>
       <div className="w-full bg-white h-[100px] flex items-center px-3 ">
@@ -248,14 +246,16 @@ const Payment = () => {
                 </span>
               </div>
             </div>
-            <div className=" w-full h-[60px] ">
+           <Link to={`/${path.HOME}`}>
+           <div className=" w-full h-[60px] ">
               <Button
                 name="Đặt hàng"
                 fw
                 placeOderKey={placeOderKey}
-                // handlePlaceOrder={handlePlaceOrder}
+                handlePlaceOrder={handlePlaceOrder}
               />
             </div>
+           </Link>
           </div>
         </div>
       </div>

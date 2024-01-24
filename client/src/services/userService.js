@@ -15,13 +15,14 @@ export const apigetCurrent = () =>
     }
   });
 
-export const postDataCart = (cart) =>
+export const postDataCart = (id, cart) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
-        method: "POST",
-        url: "/user/get-one", // Thay thế "/your-endpoint" bằng đường dẫn của bạn
+        method: "PUT",
+        url: "/user/get-one", // Thay thế bằng endpoint phù hợp cho chức năng đặt hàng của bạn
         data: {
+          id: id, // Thêm thông tin userId vào dữ liệu gửi đi
           cart: cart,
         },
       });

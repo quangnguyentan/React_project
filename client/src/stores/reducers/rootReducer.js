@@ -16,10 +16,16 @@ const authConfig = {
   key: "auth",
   whitelist: ["isLoggedIn", "token"],
 };
+const cartConfig = {
+  ...commonConfig,
+  key: "cart",
+  whitelist: ["cartItems"], 
+};
+
 const rootReducer = combineReducers({
   auth: persistReducer(authConfig, authReducer),
   user: userReducer,
   product: productReducers,
-  cart: cartReducer,
+  cart: persistReducer(cartConfig, cartReducer),
 });
 export default rootReducer;

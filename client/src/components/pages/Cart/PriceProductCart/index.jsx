@@ -17,7 +17,6 @@ export default function PriceProductCart() {
   const dispatch = useDispatch();
 
   const handleTotalCart = (cartItems) => {
-    console.log(123);
     dispatch(totalCart(calculateTotal(cartItems)));
   };
 

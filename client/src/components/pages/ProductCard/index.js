@@ -6,13 +6,17 @@ import path from "../../../utils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../stores/actions/cartAction";
 import { apiGetProductById } from "../../../services/productService";
-import { formatMoney } from "../../../utils/helper";
+import { formatMoney, totalPrice } from "../../../utils/helper";
 import { Bounce, toast } from "react-toastify";
 
 const { CiStar, GoPlus, FiMinus } = icons;
 const ProductCard = () => {
+  const dispatch = useDispatch();
+  // get item từ redux
   const cartItems = useSelector((state) => state.cart.cartItems);
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+  // get params
   const { category, id, title } = useParams();
   const getProductById = async (id) => {
     const response = await apiGetProductById(id);
@@ -22,9 +26,7 @@ const ProductCard = () => {
     getProductById(id);
   }, []);
   console.log(product);
-  const [quantity, setQuantity] = useState(1);
 
-  const dispatch = useDispatch();
   const handleAddToCart = (quantity) => {
     const isProductInCart = cartItems.some((item) => item.id === product?._id);
     console.log(isProductInCart);
@@ -46,7 +48,7 @@ const ProductCard = () => {
         img: product?.thumb?.[0]?.split(",")[0].split(" ")[0],
         quantities: quantity,
         title: product?.title,
-        price: product?.prices, // Cần kiểm tra xem giá cần sửa đổi như thế nào dựa vào dữ liệu từ API
+        price: product?.prices,
       };
       dispatch(addToCart(newCartItem));
       toast.success("sản phẩm đã được thêm vào giỏ hàng", {
@@ -226,7 +228,7 @@ const ProductCard = () => {
               <div className="flex flex-col gap-2">
                 <span className="font-medium">Tạm tính</span>
                 <div className="flex font-semibold text-2xl">
-                  {formatMoney(product?.prices)}
+                  {formatMoney(totalPrice(product?.prices, quantity))}
                   <sub className="">đ</sub>
                 </div>
               </div>
