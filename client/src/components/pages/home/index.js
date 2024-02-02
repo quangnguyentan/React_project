@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Footer, Slidebar } from "../../organisms";
-import Banner from "../../organisms/Banner";
+import Banner from "../../organisms/banner";
 import { useLocation } from "react-router-dom";
 import path from "../../../utils/path";
 import Product from "../../organisms/Products";

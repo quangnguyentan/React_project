@@ -22,6 +22,7 @@
     "react-router-dom": "^6.18.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
+    "react-toastify": "^10.0.3",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
@@ -56,6 +57,8 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
-    "tailwindcss": "^3.3.5"
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1"
   }
 }

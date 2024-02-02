@@ -13,6 +13,7 @@ const HeaderMenu = () => {
   const dispatch = useDispatch();
   const [isHovering, setIsHovering] = useState(false);
   const { currentData } = useSelector((state) => state.user);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   // useEffect(() => {
   //   const fetchUser = async () => {
   //     let response = await apigetCurrent(token);
@@ -141,7 +142,7 @@ const HeaderMenu = () => {
       w-[30px] h-[30px]  "
               />
               <span className="border text-white text-xs font-semibold w-[25px] h-[15px] justify-center flex items-center bg-red-500 rounded-[50%] border-red-500">
-                {isLoggedIn ? currentData?.cart?.length : 0}
+                {isLoggedIn ? cartItems?.length : 0}
               </span>
             </div>
           </Link>
@@ -250,7 +251,7 @@ const HeaderMenu = () => {
       w-[30px] h-[30px]  "
               />
               <span className="border text-white text-xs font-semibold w-[25px] h-[15px] justify-center flex items-center bg-red-500 rounded-[50%] border-red-500">
-                {isLoggedIn ? currentData?.cart?.length : 0}
+                {isLoggedIn ? currentData?.cartItems?.length : 0}
               </span>
             </div>
           </Link>

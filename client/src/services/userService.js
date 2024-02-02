@@ -14,6 +14,25 @@ export const apigetCurrent = () =>
       reject(error);
     }
   });
+
+
+export const postDataCart = (id, cart) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: "/user/get-one", // Thay thế bằng endpoint phù hợp cho chức năng đặt hàng của bạn
+        data: {
+          id: id, // Thêm thông tin userId vào dữ liệu gửi đi
+          cart: cart,
+        },
+  });
+        resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const apigetAllUser = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -57,6 +76,7 @@ export const apiRemoveCart = (pid) =>
         // headers: {
         //   authentication: token,
         // },
+
       });
       resolve(response);
     } catch (error) {

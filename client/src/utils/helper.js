@@ -19,6 +19,18 @@ export const formatMoney = (number) => {
   return formattedString;
 };
 
+export const totalPrice = (price, quantity) => {
+  let total = price * quantity;
+  return total;
+};
+export const calculateTotal = (cartItems) => {
+  let total = 0;
+  cartItems.forEach((product) => {
+    total += totalPrice(product.price, product.quantities);
+  });
+  return total;
+}
+
 export const renderColor = (type) => {
   const color = [];
 
@@ -84,4 +96,5 @@ export const compareArrays = (a, b) => {
 
   // Trả về mảng indexes
   return indexes;
+
 };

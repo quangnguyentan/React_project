@@ -1,4 +1,7 @@
 import { Routes, Route, useLocation, matchPath } from "react-router-dom";
+import { Bounce, ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 import {
   Home,
   Login,
@@ -39,6 +42,20 @@ function App() {
   console.log(path.MYACCOUNT[2]);
   return (
     <div className=" bg-gray-100 ">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />} />
